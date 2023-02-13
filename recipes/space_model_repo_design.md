@@ -90,7 +90,7 @@ class SpaceRepository
 
   # Gets a single record by its ID
   # One argument: the id (number)
-  def find(id)
+  def find_by_id(id)
     # Executes the SQL query:
     # SELECT id, name, cohort_name FROM students WHERE id = $1;
 
@@ -156,7 +156,7 @@ spaces[1].available_date # => ['2022-02-16', '2022-02-14']
 
 repo = SpaceRepository.new
 
-space = repo.find(1)
+space = repo.find_by_id(1)
 
 space.id # =>  1
 space.name # =>  'Space A'
