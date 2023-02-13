@@ -21,7 +21,7 @@ CREATE TABLE "spaces" (
   "name" text,
   "location" text,
   "maker_id" int,
-  "available_date" date ARRAY
+  "available_date" text
 );
 
 CREATE TABLE "requests" (
