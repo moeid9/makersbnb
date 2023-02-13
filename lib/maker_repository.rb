@@ -50,6 +50,7 @@ class MakersRepository
 	end
 
 	def create(maker)
+		# encrypyted_password = BCrypt::Password.create(maker.password)
     sql = "INSERT INTO makers (name, email, password) VALUES('#{maker.name}', '#{maker.email}', '#{maker.password}');"
     result_set = DatabaseConnection.exec_params(sql, [])
     return result_set
