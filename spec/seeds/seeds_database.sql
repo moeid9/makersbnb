@@ -1,7 +1,6 @@
 DROP TABLE IF EXISTS users,
 makers,
 spaces,
-requests,
 bookings cascade;
 
 CREATE TABLE "users" (
