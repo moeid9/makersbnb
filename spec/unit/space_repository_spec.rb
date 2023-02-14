@@ -60,5 +60,27 @@ RSpec.describe SpaceRepository do
     expect(space.maker_id).to eq 1
     expect(space.available_date).to eq '2022-02-13'
   end
-  
+
+  it "finds spaces available on a given date" do
+    spaces = @repo.find_by_date('2022-02-14')
+
+    expect(spaces.length).to eq 2
+    expect(spaces[0].id).to eq 2
+    expect(spaces[1].id).to eq 3
+  end
+
+  it "finds spaces by owner" do
+    spaces = @repo.find_by_maker(2)
+
+    expect(spaces[0].maker_id).to eq 2
+    expect(spaces[1].maker_id).to eq 2
+  end
+
+  it "finds spaces by a given location" do
+    spaces = @repo.find_by_location('Leeds')
+
+    expect(spaces.length).to eq 2
+    expect(spaces[0].location).to eq 'Leeds'
+    expect(spaces[1].location).to eq 'Leeds'
+  end
 end
