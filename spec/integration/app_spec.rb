@@ -30,10 +30,10 @@ describe Application do
       response = get("/login")
 
       expect(response.status).to eq(200)
-      expect(response.body).to include("<h1>Login</h1>")
+      expect(response.body).to include("<h1>Makers Login</h1>")
       expect(response.body).to include('<form action="/login" method="POST">')
-      expect(response.body).to include('<input type = "text" name = "email" />')
-      expect(response.body).to include('<input type = "text" name = "password" />')
+      expect(response.body).to include('<input type="email" class="form-control" name="email">')
+      expect(response.body).to include('<input type="password" class="form-control" name="password" >')
     end
   end
 
@@ -42,11 +42,11 @@ describe Application do
       response = get("/signup")
 
       expect(response.status).to eq(200)
-      expect(response.body).to include("<h1>Sign Up</h1>")
+      expect(response.body).to include("<h1>Makers Sign Up</h1>")
       expect(response.body).to include('<form action="/signup" method="POST">')
-      expect(response.body).to include('<input type = "text" name = "name" />')
-      expect(response.body).to include('<input type = "text" name = "email" />')
-      expect(response.body).to include('<input type = "text" name = "password" />')
+      expect(response.body).to include('<input type="name" class="form-control" name="name">')
+      expect(response.body).to include('<input type="email" class="form-control" name="email">')
+      expect(response.body).to include('<input type="password" class="form-control" name="password">')
     end
   end
 
@@ -58,7 +58,7 @@ describe Application do
         password: "giant",
       )
 
-      expect(response.status).to eq(200)
+      expect(response.status).to eq(302) # => redirection code
     end
   end
 
