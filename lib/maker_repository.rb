@@ -36,14 +36,14 @@ class MakersRepository
 
 	end
 
-	def find_by_name(name)
-    sql = "SELECT name, email, password FROM makers WHERE name = $1"
-    result_set = DatabaseConnection.exec_params(sql, [name])
+	def find_by_email(email)
+    sql = "SELECT name, email, password FROM makers WHERE email = $1"
+    result_set = DatabaseConnection.exec_params(sql, [email])
 
     result_set.each do |record|
       maker = Makers.new
       maker.id = record['id']
-      maker.email = record['email']
+      maker.name = record['name']
       maker.password = record['password']
       return maker
     end

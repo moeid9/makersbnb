@@ -36,11 +36,11 @@ describe MakersRepository do
     expect(selection.password).to eq 'giant'
   end
 
-	it 'finds an entry by the name and returns a record' do
+	it 'finds an entry by the email and returns a record' do
     repo = MakersRepository.new
 
-    selection = repo.find_by_name('Penelope Cruz')
-    expect(selection.email).to eq 'actor@email.com'
+    selection = repo.find_by_email('actor@email.com')
+    expect(selection.name).to eq 'Penelope Cruz'
     expect(selection.password).to eq 'Women<3'
   end
 
