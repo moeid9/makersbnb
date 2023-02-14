@@ -61,7 +61,6 @@ describe Application do
       )
 
       expect(response.status).to eq(200)
-
     end
   end
 
@@ -75,7 +74,8 @@ describe Application do
       )
 
       expect(response.status).to eq(200)
-=======
+    end
+  end
   # GET /spaces 
   context 'GET /spaces' do
     it 'should return all the spaces' do
