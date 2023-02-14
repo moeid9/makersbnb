@@ -1,3 +1,8 @@
+DROP TABLE IF EXISTS users,
+makers,
+spaces,
+bookings cascade;
+
 CREATE TABLE "users" (
   "id" serial PRIMARY KEY,
   "name" text,
@@ -14,32 +19,33 @@ CREATE TABLE "makers" (
 
 CREATE TABLE "spaces" (
   "id" serial PRIMARY KEY,
-  "description" text,
-  "price" int,
+  "date" date,
   "name" text,
+  "price" int,
+  "description" text,
   "location" text,
-  "makerId" int,
-  "available_date" text
+  "available" boolean,
+  "maker_id" int
 );
 
-CREATE TABLE "requests" (
+CREATE TABLE "bookings" (
   "id" serial PRIMARY KEY,
-  "requested_date" text,
-  "requested_spaceId" int,
-  "requested_userId" int
+  "confirmed" boolean,
+  "requested_space_id" int,
+  "requested_user_id" int
 );
 
 ALTER TABLE
   "spaces"
 ADD
-  FOREIGN KEY ("makerId") REFERENCES "makers" ("id");
+  FOREIGN KEY ("maker_id") REFERENCES "makers" ("id");
 
 ALTER TABLE
-  "requests"
+  "bookings"
 ADD
-  FOREIGN KEY ("requested_spaceId") REFERENCES "spaces" ("id");
+  FOREIGN KEY ("requested_space_id") REFERENCES "spaces" ("id");
 
 ALTER TABLE
-  "requests"
+  "bookings"
 ADD
-  FOREIGN KEY ("requested_userId") REFERENCES "users" ("id");
+  FOREIGN KEY ("requested_user_id") REFERENCES "users" ("id");
