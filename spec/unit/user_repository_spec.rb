@@ -36,11 +36,12 @@ describe UsersRepository do
     expect(selection.password).to eq 'pikipi'
   end
 
-	it 'finds an entry by the name and returns a record' do
+	it 'finds an entry by the email and returns a record' do
     repo = UsersRepository.new
 
-    selection = repo.find_by_name('Brock Rocky')
-    expect(selection.email).to eq 'steelix@pokemon.com'
+    selection = repo.find_by_email('steelix@pokemon.com')
+    p selection
+    expect(selection.name).to eq 'Brock Rocky'
     expect(selection.password).to eq 'Women<3'
   end
 
