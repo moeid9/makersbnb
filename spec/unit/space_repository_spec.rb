@@ -21,16 +21,16 @@ RSpec.describe SpaceRepository do
     expect(spaces[0].id).to eq 1 # =>  1
     expect(spaces[0].name).to eq 'Space A' # =>  'Space A'
     expect(spaces[0].maker_id).to eq 1 # => 1
-    expect(spaces[0].available_date).to eq '2022-02-13'
+    expect(spaces[0].date).to eq '2022-02-13'
 
     expect(spaces[1].id).to eq  2
     expect(spaces[1].name).to eq 'Space B'
     expect(spaces[1].maker_id).to eq 2
-    expect(spaces[1].available_date).to eq '2022-02-14'
+    expect(spaces[1].date).to eq '2022-02-14'
   end
 
   it "creates a space" do 
-    new_space = double :space, name: "Space A", description: "It's nice", location: "london", price: 50, maker_id: 1, available_date: '2023-02-13'
+    new_space = double :space, name: "Space A", description: "It's nice", location: "london", price: 50, maker_id: 1, date: '2023-02-13', available: true
 
     @repo.create(new_space)
         
@@ -51,14 +51,14 @@ RSpec.describe SpaceRepository do
   end
 
   it "Find a space by ID" do
-    space_to_find = double :space, id: 1, name: "Space A", description: "It's nice", location: "london", maker_id: 1, available_date: "2023-02-13"
+    space_to_find = double :space, id: 1, name: "Space A", description: "It's nice", location: "london", maker_id: 1, date: "2023-02-13", available: true
 
     space = @repo.find_by_id(space_to_find.id)
 
     expect(space.id).to eq 1
     expect(space.name).to eq 'Space A'
     expect(space.maker_id).to eq 1
-    expect(space.available_date).to eq '2022-02-13'
+    expect(space.date).to eq '2022-02-13'
   end
 
   it "finds spaces available on a given date" do
