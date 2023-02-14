@@ -12,7 +12,9 @@ bundle install
 
 # Seed databases
 psql -h 127.0.0.1 makersbnb < spec/seeds/seeds_database.sql
-psql -h 127.0.0.1 makersbnb_test < spec/seeds/seeds_database.sql
+psql -h 127.0.0.1 makersbnb_test < spec/seeds/seeds_spaces.sql
+psql -h 127.0.0.1 makersbnb_test < spec/seeds/seeds_makers.sql
+psql -h 127.0.0.1 makersbnb_test < spec/seeds/seeds_users.sql
 
 # Run the tests
 rspec
