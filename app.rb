@@ -64,6 +64,7 @@ class Application < Sinatra::Base
     else
       return''
     end
+  end
 
   get '/spaces' do
     repo = SpaceRepository.new
