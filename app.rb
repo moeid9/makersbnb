@@ -78,7 +78,7 @@ class Application < Sinatra::Base
       session[:maker_id] = maker.id
       redirect "/spaces"
     else
-      return erb(:makers_login)
+      redirect('/makers/login')
     end
   end
 
@@ -174,9 +174,11 @@ class Application < Sinatra::Base
     maker_repo = MakersRepository.new
     if session[:maker_id]
       @maker = maker_repo.find(session[:maker_id])
+      @spaces = space_repo.all
+      return erb(:spaces)
+    else
+      redirect '/makers/login'
     end
-    @spaces = space_repo.all
-    return erb(:spaces)
   end
 
   get "/spaces/:id" do
@@ -184,9 +186,11 @@ class Application < Sinatra::Base
     maker_repo = MakersRepository.new
     if session[:maker_id]
       @maker = maker_repo.find(session[:maker_id])
+      @space = repo.find_by_id(params[:id])
+      return erb(:space_single)
+    else
+      redirect '/makers/login'
     end
-    @space = repo.find_by_id(params[:id])
-    return erb(:space_single)
   end
 
 end
