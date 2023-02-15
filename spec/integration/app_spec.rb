@@ -119,11 +119,11 @@ describe Application do
     it 'should log the user in' do
       response = post(
         '/users/login',
-        email: 'pikachu@email.com',
+        email: 'pikachu@pokemon.com',
         password: 'pikipi'
       )
       
-      expect(response.status).to eq(200)
+      expect(response.status).to eq(302)
     end
   end
 

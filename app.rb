@@ -98,7 +98,22 @@ class Application < Sinatra::Base
   get '/users/login' do
     return erb(:users_login)
   end
+  # post "/login" do
+  #   repo = MakersRepository.new
 
+  #   email = params[:email]
+  #   password = params[:password]
+
+  #   maker = repo.find_by_email(email)
+
+  #   if maker.password == password
+  #     # Set the user ID in session
+  #     session[:maker_id] = maker.id
+  #     redirect "/spaces"
+  #   else
+  #     return erb(:login)
+  #   end
+  # end
   post '/users/login' do
     repo = UsersRepository.new
     
@@ -107,11 +122,9 @@ class Application < Sinatra::Base
 
     user = repo.find_by_email(email)
 
-    p user
-
     if user.password == password
-      session[:user] = user.id
-      return erb(:index)
+      session[:user_id] = user.id
+      redirect "/spaces"
     else
       return ''
     end

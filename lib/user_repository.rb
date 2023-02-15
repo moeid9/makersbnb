@@ -38,26 +38,18 @@ class UsersRepository
 
   def find_by_email(email)
     sql = 'SELECT id, name, email, password FROM users WHERE email = $1'
-    result = DatabaseConnection.exec_params(sql, [email])
+    result_set = DatabaseConnection.exec_params(sql, [email])
 
-    user = User.new
-    user.id = result.first['id']
-    user.name = result.first['name']
-    user.email = result.first['email']
-    user.password = result.first['password']
-
-    p "This object #{user}"
-    
-    return user
-
-    # result_set.each do |record|
-    #   user = Users.new
-    #   user.id = record['id']
-    #   user.name = record['name']
-    #   user.email = record['email']
-    #   user.password = record['password']
-    # end
-	end 
+    result_set.each do |result|
+      user = Users.new
+      user.id = result['id']
+      user.name = result['name']
+      user.email = result['email']
+      user.password = result['password']
+      p "This object #{user}"
+      return user
+    end
+  end
 
 	def create(user)
     sql = "INSERT INTO users (name, email, password) VALUES('#{user.name}', '#{user.email}', '#{user.password}');"
