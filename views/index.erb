@@ -9,11 +9,13 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <link rel="stylesheet" href="/style.css" >
   </head>
-  <body class="container text-center">
+  <body>
     <header>
-      <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      <nav class="navbar navbar-expand-lg bg-body-tertiary px-3">
         <div class="container-fluid">
-          <a class="navbar-brand" href="#">
+          <%# Logo %>
+          <a class="navbar-brand logo-rapper" id="team-logo-title" href="/">
+            <img src="/cheetha.svg" height="40">
             Team Cheetah
           </a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -28,19 +30,25 @@
             </div>
             <% if session[:maker_id] %>
               <div style="display: flex; gap: 20px; align-items:center">
-                <div>Logged in As <%= @maker.name %></div>
-                <a class="nav-link" href="/logout">Logout</a>
+                <div>Logged in As <span class="user-name-container"><%= @maker.name %></span>
+                </div>
+                <a class="btn btn-outline-danger" href="/logout">Logout</a>
               </div>
             <% else %>
-              <a class="nav-link" href="/login">Makers Login</a>
+              <a class="btn btn-outline-primary" href="/login">Makers Login</a>
             <% end %>
           </div>
         </div>
       </nav>
     </header>
-    <main class="container text-center">
-      <h1>MakersBnB</h1>
-      <img src="https://images.unsplash.com/photo-1558036117-15d82a90b9b1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" class="img-fluid" alt="A nice house in the countryside, picked by Dora">
+    <main class="main-bg-image home-hero">
+      <div class="container home-hero-rapper">
+        <h1>MakersBnB</h1>
+        <p>Book your next travel adventure with Makersbnb and experience the world like a local! Whether you're seeking a cozy cabin or a beachside villa, Makersbnb has the perfect home for your next unforgettable trip.
+        </p>
+        <a class="btn btn-outline-dark" href="/spaces">Explore more
+        </a>
+      </div>
     </main>
   </body>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>

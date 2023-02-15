@@ -5,13 +5,16 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="stylesheet" href="/style.css" >
     <title>Makersbnb</title>
   </head>
-  <body class="container text-center">
+  <body>
     <header>
-      <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      <nav class="navbar navbar-expand-lg bg-body-tertiary px-3">
         <div class="container-fluid">
-          <a class="navbar-brand" href="#">
+          <%# Logo %>
+          <a class="navbar-brand logo-rapper" id="team-logo-title" href="/">
+            <img src="/cheetha.svg" height="40">
             Team Cheetah
           </a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -26,11 +29,12 @@
             </div>
             <% if session[:maker_id] %>
               <div style="display: flex; gap: 20px; align-items:center">
-                <div>Logged in As <%= @maker.name %></div>
-                <a class="nav-link" href="/logout">Logout</a>
+                <div>Logged in As <span class="user-name-container"><%= @maker.name %></span>
+                </div>
+                <a class="btn btn-outline-danger" href="/logout">Logout</a>
               </div>
             <% else %>
-              <a class="nav-link" href="/login">Makers Login</a>
+              <a class="btn btn-outline-primary" href="/login">Makers Login</a>
             <% end %>
           </div>
         </div>
@@ -41,15 +45,20 @@
         <h1>Book a Space</h1>
         <!-- Book space, list available dates etc -->
       </div>
-      <div class="container" id="spaces-container">
+      <div class="container d-flex flex-wrap" id="spaces-container">
         <% @spaces.each do |space| %>
           <!-- Table containing all the spaces available to book -->
-          <div class="container card" id="space">
-            <%# name %>
-            <h2 class="card-title"><%= space.name %></h2>
-            <%# description %>
-            <p class="card-text"><%= space.description %></p>
-            <a href="spaces/<%= space.id %>" class="btn btn-primary">Book</a>
+          <div class="col-12 col-md-6 col-xl-4 p-2" id="space">
+            <div class="card">
+              <%# name %>
+              <img src="https://images.unsplash.com/photo-1529408632839-a54952c491e5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2370&q=80" class="card-img-top" alt="">
+              <div class="card-body">
+                <h3 class="card-title"><%= space.name %></h3>
+                <%# description %>
+                <p class="card-text"><%= space.description %></p>
+                <a href="spaces/<%= space.id %>" class="btn btn-outline-primary spacecard-book-button">Book</a>
+              </div>
+            </div>
           </div>
         <% end %>
       </div>
