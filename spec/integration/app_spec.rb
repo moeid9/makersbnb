@@ -134,34 +134,14 @@ describe Application do
     end
   end
   # GET /spaces/create
-  xcontext "GET /spaces/create" do
+  context "GET /spaces/create" do
     it "should get the page to add a new space" do
-      response = get("/spaces")
+      response = get("/spaces/create")
 
-      expect(response.status).to eq(200)
-      expect(response.body).to include("<h1>Add a new space</h1>")
+      expect(response.status).to eq(302)
     end
   end
-  # POST /spaces
-  xcontext "POST /spaces" do
-    it "should add a new space" do
-      response = post("/spaces")
-
-      expect(response.status).to eq(200)
-    end
-  end
-  # DELETE /spaces
-  xcontext "POST /spaces" do
-    it "should add a new space" do
-      response = delete("/spaces")
-
-      expect(response.status).to eq(200)
-
-      repo = SpaceRepository.new
-
-      expect(repo.all.length).to eq 4
-    end
-  end
+ 
   # PUT /spaces
   xcontext "PATCH /spaces" do
     it "should update a space" do

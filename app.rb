@@ -116,6 +116,39 @@ class Application < Sinatra::Base
     redirect "/"
   end
 
+  get '/spaces/create' do
+    repo = SpaceRepository.new
+    maker_repo = MakersRepository.new
+    if session[:maker_id]
+      @maker = maker_repo.find(session[:maker_id])
+      return erb(:spaces_creation)
+    else
+      redirect '/makers/login'
+    end
+  end
+
+  post '/spaces/create' do
+    space_repo = SpaceRepository.new
+    maker_repo = MakersRepository.new
+    if session[:maker_id]
+      @maker = maker_repo.find(session[:maker_id])
+      @maker = maker_repo.find(session[:maker_id])
+      new_space = Space.new
+      new_space.name = params[:name]
+      new_space.location = params[:location]
+      new_space.description = params[:description]
+      new_space.price = params[:price]
+      new_space.date = params[:date]
+      new_space.available = params[:available]
+      new_space.maker_id = params[:maker_id]
+
+      space_repo.create(new_space)
+      
+    else
+      redirect '/makers/login'
+    end
+  end
+
   get "/spaces" do
     space_repo = SpaceRepository.new
     maker_repo = MakersRepository.new
@@ -135,4 +168,5 @@ class Application < Sinatra::Base
     @space = repo.find_by_id(params[:id])
     return erb(:space_single)
   end
+
 end
