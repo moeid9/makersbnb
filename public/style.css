@@ -1,3 +1,122 @@
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Expletus+Sans:wght@500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap");
+
+* {
+  font-size: 18px;
+  font-family: "DM Sans", sans-serif;
+}
+
+h1,
+h2 {
+  font-family: "Expletus Sans", cursive;
+}
+
 body {
-    font-size: 18px;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  padding: 3rem 2rem;
+  flex: 1;
+}
+
+h1 {
+  margin-bottom: 1.2rem;
+}
+
+.main-bg-image {
+  background: url("https://images.unsplash.com/photo-1558036117-15d82a90b9b1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+.login-main {
+  flex-direction: row;
+  gap: 5rem;
+  margin-top: 3rem;
+}
+
+.image-rapper {
+  border-radius: 12px;
+  max-width: 50%;
+  max-height: 45vh;
+  object-fit: cover;
+  box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.1);
+}
+
+.user-name-container {
+  font-weight: bold;
+  text-transform: capitalize;
+  margin: 0 0.5rem;
+}
+
+.logo-rapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.login-button-rapper {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.login-button-rapper button,
+.login-button-rapper a {
+  flex: 1;
+}
+
+.home-hero-rapper {
+  margin-top: 3rem;
+  background-color: rgba(255, 255, 255, 0.65);
+  border-radius: 1rem;
+  padding: 3rem;
+}
+
+.spacecard-book-button {
+  width: 100%;
+}
+
+#team-logo-title {
+  font-family: "Bebas Neue", cursive;
+  text-transform: uppercase;
+  font-size: 1.5rem;
+}
+
+@media only screen and (max-width: 1200px) {
+  main {
+    padding: 1rem;
+  }
+
+  .home-hero {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .home-hero-rapper {
+    background-color: rgba(255, 255, 255, 0.8);
+  }
+
+  .login-button-rapper {
+    flex-direction: column;
+  }
+
+  .image-rapper {
+    max-width: 100%;
+  }
+
+  .login-main {
+    margin-top: 0;
+    gap: 2rem;
+    flex-direction: column;
+  }
 }
