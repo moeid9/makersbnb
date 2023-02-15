@@ -88,6 +88,10 @@ class Application < Sinatra::Base
 
   get "/spaces/:id" do
     repo = SpaceRepository.new
+    maker_repo = MakersRepository.new
+    if session[:maker_id]
+      @maker = maker_repo.find(session[:maker_id])
+    end
     @space = repo.find_by_id(params[:id])
     return erb(:space_single)
   end
