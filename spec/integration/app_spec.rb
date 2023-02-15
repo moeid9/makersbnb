@@ -27,35 +27,35 @@ describe Application do
   end
 
 
-  context 'GET /login' do
-    it 'should get the Login page' do
-      response = get('/login')
+  context 'GET /makers/login' do
+    it 'should get the Makers Login page' do
+      response = get('/makers/login')
 
       expect(response.status).to eq(200)
-      expect(response.body).to include('<h1>Login</h1>')
-      expect(response.body).to include('<form action="/login" method="POST">')
-      expect(response.body).to include('<input type = "text" name = "email" />')
-      expect(response.body).to include('<input type = "text" name = "password" />')
+      expect(response.body).to include('<h1>Login to your Makers Account</h1>')
+      expect(response.body).to include('<form action="/makers/login" method="POST">')
+      expect(response.body).to include('<input type="text" name="email" />')
+      expect(response.body).to include('<input type="text" name="password" />')
     end
   end
 
-  context 'GET /signup' do
+  context 'GET /makers/signup' do
     it 'should get the Sign up page' do
-      response = get('/signup')
+      response = get('/makers/signup')
 
       expect(response.status).to eq(200)
-      expect(response.body).to include('<h1>Sign Up</h1>')
-      expect(response.body).to include('<form action="/signup" method="POST">')
-      expect(response.body).to include('<input type = "text" name = "name" />')
-      expect(response.body).to include('<input type = "text" name = "email" />')
-      expect(response.body).to include('<input type = "text" name = "password" />')
+      expect(response.body).to include('<h1>Signup as a Maker</h1>')
+      expect(response.body).to include('<form action="/makers/signup" method="POST">')
+      expect(response.body).to include('<input type="text" name="name" />')
+      expect(response.body).to include('<input type="text" name="email" />')
+      expect(response.body).to include('<input type="text" name="password" />')
     end
   end
 
-  context 'POST /login' do
-    it 'should get the Login page' do
+  context 'POST /makers/login' do
+    it 'should log the user in' do
       response = post(
-        '/login',
+        '/makers/login',
         email: 'black_jack@email.com',
         password: 'giant'
       )
@@ -64,10 +64,10 @@ describe Application do
     end
   end
 
-  context 'POST /signup' do
+  context 'POST /makers/signup' do
     it 'should get the signup page' do
       response = post(
-        '/signup',
+        '/makers/signup',
         name: 'Jack Daniels',
         email: 'jack@email.com',
         password: 'giantqwe'
@@ -76,6 +76,57 @@ describe Application do
       expect(response.status).to eq(200)
     end
   end
+
+  context 'GET /users/signup' do
+    it 'should get the signup page for users' do
+    response = get('/users/signup')
+    
+    expect(response.status).to eq(200)
+    expect(response.body).to include('<h1>User Signup</h1>')
+    expect(response.body).to include('<form action="/users/signup" method="POST">')
+    expect(response.body).to include('<input type="text" name="name" />')
+    expect(response.body).to include('<input type="text" name="email" />')
+    expect(response.body).to include('<input type="text" name="password" />')
+    end
+  end
+
+  context 'POST /users/signup' do
+    it 'should get the signup page for users' do
+      response = post(
+        'users/signup',
+        name: 'David Beckham',
+        email: 'david@email.com',
+        password: 'football'
+      )
+
+      expect(response.status).to eq(200)
+    end
+  end
+
+  context 'GET /users/login' do
+    it 'should get the Users Login page' do
+      response = get('/users/login')
+
+      expect(response.status).to eq(200)
+      expect(response.body).to include('<h1>Login to your Account</h1>')
+      expect(response.body).to include('<form action="/users/login" method="POST">')
+      expect(response.body).to include('<input type="text" name="email" />')
+      expect(response.body).to include('<input type="text" name="password" />')
+    end
+  end
+
+  context 'POST /users/login' do
+    it 'should log the user in' do
+      response = post(
+        '/users/login',
+        email: 'pikachu@pokemon.com',
+        password: 'pikipi'
+      )
+      
+      expect(response.status).to eq(302)
+    end
+  end
+
   # GET /spaces 
   context 'GET /spaces' do
     it 'should return all the spaces' do
