@@ -39,14 +39,22 @@ class Application < Sinatra::Base
 
   post "/makers/signup" do
     repo = MakersRepository.new
-    new_maker = Makers.new
-    new_maker.name = params[:name]
-    new_maker.email = params[:email]
-    new_maker.password = params[:password]
-
-    repo.create(new_maker)
-
-    return erb(:makers_login)
+    name = params[:name]
+    email = params[:email]
+    password = params[:password]
+    
+    if name.nil? || email.nil? || password.nil? || name == "" || email == "" || password == ""
+      return erb(:makers_signup)
+    else
+      new_maker = Makers.new
+      new_maker.name = name
+      new_maker.email = email
+      new_maker.password = password
+  
+      repo.create(new_maker)
+  
+      return erb(:makers_login)
+    end
   end
   # This route receives login information (email and password)
   # as body parameters, and find the user in the database
@@ -65,12 +73,12 @@ class Application < Sinatra::Base
     # project, you should encrypt the password
     # stored in the database.
 
-    if maker.password == password
+    if repo.sign_in(email, password)
       # Set the user ID in session
       session[:maker_id] = maker.id
       redirect "/spaces"
     else
-      return erb(:login)
+      return erb(:makers_login)
     end
   end
 
@@ -80,14 +88,22 @@ class Application < Sinatra::Base
 
   post "/users/signup" do
     repo = UsersRepository.new
-    new_user = Users.new
-    new_user.name = params[:name]
-    new_user.email = params[:email]
-    new_user.password = params[:password]
-
-    repo.create(new_user)
-
-    return erb(:users_login)
+    name = params[:name]
+    email = params[:email]
+    password = params[:password]
+    
+    if name.nil? || email.nil? || password.nil? || name == "" || email == "" || password == ""
+      return erb(:users_signup)
+    else
+      new_user = Users.new
+      new_user.name = name
+      new_user.email = email
+      new_user.password = password
+  
+      repo.create(new_user)
+  
+      return erb(:users_login)
+    end
   end
 
   get "/users/login" do
@@ -100,13 +116,17 @@ class Application < Sinatra::Base
     email = params[:email]
     password = params[:password]
 
-    user = repo.find_by_email(email)
-
-    if repo.sign_in(email, password)
-      session[:user_id] = user.id
-      redirect "/spaces"
+    if email.nil? || password.nil? || email == "" || password == ""
+      return erb(:users_login)
     else
-      return erb(:login)
+      user = repo.find_by_email(email)
+  
+      if repo.sign_in(email, password)
+        session[:user_id] = user.id
+        redirect "/spaces"
+      else
+        return erb(:users_login)
+      end
     end
   end
 

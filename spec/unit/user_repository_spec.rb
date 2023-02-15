@@ -40,7 +40,6 @@ describe UsersRepository do
     repo = UsersRepository.new
 
     selection = repo.find_by_email('steelix@pokemon.com')
-    p selection
     expect(selection.name).to eq 'Brock Rocky'
     expect(selection.password).to eq '$2a$12$zPrhw0IggUF.1KfQ2f0UJOpqscOEFktfMa/tpMNuKP30aBo4IzlP.'
   end
