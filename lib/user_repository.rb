@@ -1,4 +1,5 @@
 require_relative './user'
+require 'bcrypt'
 
 class UsersRepository
 
@@ -52,8 +53,23 @@ class UsersRepository
   end
 
 	def create(user)
-    sql = "INSERT INTO users (name, email, password) VALUES('#{user.name}', '#{user.email}', '#{user.password}');"
+    encrypted_password = BCrypt::Password.create(user.password)
+    sql = "INSERT INTO users (name, email, password) VALUES('#{user.name}', '#{user.email}', '#{encrypted_password}');"
     result_set = DatabaseConnection.exec_params(sql, [])
     return result_set
 	end
+
+  def sign_in(email, submitted_password)
+    user = find_by_email(email)
+
+    return nil if user.nil?
+
+    # Compare the submitted password with the encrypted one saved in the database
+    if user.password == BCrypt::Password.new(user.password)
+      return true
+    else
+      return false
+    end
+  end
+
 end

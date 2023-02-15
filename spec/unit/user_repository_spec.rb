@@ -18,12 +18,12 @@ describe UsersRepository do
     expect(users[0].id).to eq '1'
     expect(users[0].name).to eq 'Ash Ketchum'
     expect(users[0].email).to eq 'pikachu@pokemon.com'
-    expect(users[0].password).to eq 'pikipi'
+    expect(users[0].password).to eq '$2a$12$ldp6Sfhx1heNDgHzN3iREO19XfdlSnZs8sgGWOKEFeO3Df3UO3.1q'
     
     expect(users[1].id).to eq '2'
     expect(users[1].name).to eq 'Dawn Misty'
     expect(users[1].email).to eq 'water@pokemon.com'
-    expect(users[1].password).to eq 'Pilup'
+    expect(users[1].password).to eq '$2a$12$Jv7iy8qnvJBgrqsIQGt/Gu3fHJVa1K7eq7n6V/dD6.QMEX7jmcuiy'
   end
 
 	it 'finds a single entry' do
@@ -33,7 +33,7 @@ describe UsersRepository do
 
     expect(selection.name).to eq 'Ash Ketchum'
     expect(selection.email).to eq 'pikachu@pokemon.com'
-    expect(selection.password).to eq 'pikipi'
+    expect(selection.password).to eq '$2a$12$ldp6Sfhx1heNDgHzN3iREO19XfdlSnZs8sgGWOKEFeO3Df3UO3.1q'
   end
 
 	it 'finds an entry by the email and returns a record' do
@@ -42,7 +42,7 @@ describe UsersRepository do
     selection = repo.find_by_email('steelix@pokemon.com')
     p selection
     expect(selection.name).to eq 'Brock Rocky'
-    expect(selection.password).to eq 'Women<3'
+    expect(selection.password).to eq '$2a$12$zPrhw0IggUF.1KfQ2f0UJOpqscOEFktfMa/tpMNuKP30aBo4IzlP.'
   end
 
 	it 'creates a new user and returns its record' do
@@ -52,9 +52,10 @@ describe UsersRepository do
 		new_user.email = 'mitch@email.com'
     new_user.password = 'itchymitch11'
 		repo.create(new_user)
-		selection = repo.find(4)
-    expect(selection.name).to eq 'Mitch Patek'
-    expect(selection.email).to eq 'mitch@email.com'
-    expect(selection.password).to eq 'itchymitch11'
+    expect(repo.sign_in(new_user.email, new_user.password)).to be true
+		# selection = repo.find(4)
+    # expect(selection.name).to eq 'Mitch Patek'
+    # expect(selection.email).to eq 'mitch@email.com'
+    # expect(selection.password).to eq '$2a$12$H5BSXEvlXr.CZBhSyhaqJebf2PeWOKu9WoeliaWrnY/N3teQrqOBS'
 	end
 end

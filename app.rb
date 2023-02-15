@@ -72,14 +72,6 @@ class Application < Sinatra::Base
   end
 
   get '/users/signup' do
-    repo = UsersRepository.new
-    new_users = Users.new
-    new_users.name = params[:name]
-    new_users.email = params[:email]
-    new_users.password = params[:password]
-
-    repo.create(new_users)
-
     return erb(:users_signup)
   end
   
@@ -122,7 +114,7 @@ class Application < Sinatra::Base
 
     user = repo.find_by_email(email)
 
-    if user.password == password
+    if repo.sign_in(email, password)
       session[:user_id] = user.id
       redirect "/spaces"
     else
