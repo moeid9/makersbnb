@@ -73,17 +73,54 @@ describe Application do
 
       expect(response.status).to eq(200)
     end
+
+    it "should go back to signup page when empty inputs are given" do
+      response = post(
+        "/makers/signup",
+        name: "",
+        email: "",
+        password: "",
+      )
+      expect(response.body).to include('<h1>Makers Sign Up</h1>')
+      expect(response.status).to eq(200)
+    end
+
+    it "should go back to signup page if no inputs are given" do
+      response = post("/makers/signup")
+
+      expect(response.body).to include('<h1>Makers Sign Up</h1>')
+      expect(response.status).to eq(200)
+    end
   end
+  
   context "GET /users/signup" do
     it "should get the signup page for users" do
       response = get("/users/signup")
 
       expect(response.status).to eq(200)
-      expect(response.body).to include("<h1>User Signup</h1>")
+      expect(response.body).to include('<h1>Users Sign Up</h1>')
       expect(response.body).to include('<form action="/users/signup" method="POST">')
-      expect(response.body).to include('<input type="text" name="name" />')
-      expect(response.body).to include('<input type="text" name="email" />')
-      expect(response.body).to include('<input type="text" name="password" />')
+      expect(response.body).to include('<input type="name" class="form-control" name="name">')
+      expect(response.body).to include('<label for="exampleInputEmail1" class="form-label">Email address</label>')
+      expect(response.body).to include('<input type="password" class="form-control" name="password">')
+    end
+
+    it "should go back to signup page when empty inputs are given" do
+      response = post(
+        "/users/signup",
+        name: "",
+        email: "",
+        password: "",
+      )
+      expect(response.body).to include('<h1>Users Sign Up</h1>')
+      expect(response.status).to eq(200)
+    end
+
+    it "should go back to signup page if no inputs are given" do
+      response = post("/users/signup")
+
+      expect(response.body).to include('<h1>Users Sign Up</h1>')
+      expect(response.status).to eq(200)
     end
   end
 
@@ -107,8 +144,8 @@ describe Application do
       expect(response.status).to eq(200)
       expect(response.body).to include("<h1>Login to your Account</h1>")
       expect(response.body).to include('<form action="/users/login" method="POST">')
-      expect(response.body).to include('<input type="text" name="email" />')
-      expect(response.body).to include('<input type="text" name="password" />')
+      expect(response.body).to include('<input type="email" class="form-control" name="email">')
+      expect(response.body).to include('<input type="password" class="form-control" name="password" >')
     end
   end
 
@@ -121,6 +158,25 @@ describe Application do
       )
 
       expect(response.status).to eq(302)
+    end
+
+    it "should return to user login page if the inputs is empty" do
+      response = post(
+        "/users/login",
+        email: "",
+        password: "",
+      )
+      expect(response.body).to include('<h1>Login to your Account</h1>')
+      expect(response.status).to eq(200)
+    end
+
+    it "should should return to user login page if the inputs is nil" do
+      response = post(
+        "/users/login"
+      )
+
+      expect(response.body).to include('<h1>Login to your Account</h1>')
+      expect(response.status).to eq(200)
     end
   end
 

@@ -47,7 +47,6 @@ class UsersRepository
       user.name = result['name']
       user.email = result['email']
       user.password = result['password']
-      p "This object #{user}"
       return user
     end
   end
