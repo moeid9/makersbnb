@@ -91,6 +91,7 @@ class Application < Sinatra::Base
         session[:maker_id] = maker.id
         redirect "/spaces"
       else
+        flash[:message] = "Invalid email or password. Please enter again."
         redirect "/makers/login"
       end
     end
@@ -142,6 +143,7 @@ class Application < Sinatra::Base
         session[:user_id] = user.id
         redirect "/spaces"
       else
+        flash[:message] = "Invalid email or password. Please enter again."
         return erb(:users_login)
       end
     end
@@ -287,8 +289,8 @@ class Application < Sinatra::Base
     book_repo = BookingRepository.new
     space_repo = SpaceRepository.new
     @booking = book_repo.find_by_space_id(params[:space_id])
-    book_repo.delete(@booking.id)
-    space_repo.delete(params[:space_id])
+    book_repo.confirm(@booking.id)
+    space_repo.update(params[:space_id], { available: false })
     flash[:message] = "You have confirmed a booking."
     redirect "/makers/confirmation"
   end
@@ -322,6 +324,19 @@ class Application < Sinatra::Base
     else
       flash[:message] = "You have to log in as a maker to delete your spaces."
       redirect "/makers/login"
+    end
+  end
+
+  get "/my-bookings" do
+    if session[:user_id]
+      book_repo = BookingRepository.new
+      user_repo = UsersRepository.new
+      @user = user_repo.find(session[:user_id])
+      @bookings = book_repo.find_by_user_id(session[:user_id])
+      return erb(:my_bookings)
+    else
+      flash[:message] = "You have to log in as a user to view your bookings."
+      redirect "/users/login"
     end
   end
 end

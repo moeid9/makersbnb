@@ -62,16 +62,32 @@ class BookingRepository
   end
 
   def find_by_user_id(user_id) #Dora
-    sql = "SELECT id, confirmed, requested_space_id, requested_user_id FROM bookings WHERE requested_user_id = $1;"
-    result = DatabaseConnection.exec_params(sql, [user_id]).first
+    sql = "SELECT 
+            bookings.id, bookings.confirmed, spaces.name, spaces.date
+          FROM bookings 
+          JOIN spaces ON bookings.requested_space_id = spaces.id
+          WHERE
+            bookings.requested_user_id = $1;"
+    result_set = DatabaseConnection.exec_params(sql, [user_id])
 
-    booking = Bookings.new
-    booking.id = result["id"].to_i
-    booking.confirmed = result["confirmed"]
-    booking.requested_space_id = result["requested_space_id"].to_i
-    booking.requested_user_id = result["requested_user_id"].to_i
+    bookings = []
 
-    return booking
+    result_set.each do |record|
+      bookings << {
+        id: record["id"],
+        confirm: record["confirmed"],
+        space_name: record["name"],
+        date: record["date"],
+      }
+    end
+
+    # booking = Bookings.new
+    # booking.id = result["id"].to_i
+    # booking.confirmed = result["confirmed"]
+    # booking.requested_space_id = result["requested_space_id"].to_i
+    # booking.requested_user_id = result["requested_user_id"].to_i
+
+    return bookings
   end
 
   def find_by_maker_id(maker_id)

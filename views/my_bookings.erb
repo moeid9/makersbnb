@@ -54,7 +54,7 @@
     </header>
     <main>
       <div class="container">
-        <h1>Spaces</h1>
+        <h1>My Bookings</h1>
         <!-- Book space, list available dates etc -->
       </div>
       <% if flash[:message] %>
@@ -63,10 +63,7 @@
         </div>
       <% end %>
       <div class="container d-flex flex-wrap" id="spaces-container">
-        <% if @spaces.length == 0 %>
-          <p class="mt-4">There is no booking for your spaces.</p>
-        <% end %>
-        <% @spaces.each do |space| %>
+        <% @bookings.each do |booking| %>
           <!-- Table containing all the spaces available to book -->
           <div class="col-12 col-md-6 col-xl-4 p-2" id="space">
             <div class="card">
@@ -75,10 +72,14 @@
               <!-- img style="max-width: 100%; max-height: 200px; object-fit: cover;" src="<%=image_links.sample%>" class="" alt="" -->
               <img class="img-fluid" src="<%= image_links.sample %>">
               <div class="card-body">
-                <h3 class="card-title"><%= space.name %></h3>
+                <h3 class="card-title"><%= booking[:space_name] %></h3>
+                <% if booking[:confirm] == "t" %>
+                  <div class="badge text-bg-success mb-2">Confirmed</div>
+                <% else %>
+                  <div class="badge text-bg-warning mb-2">Pending</div>
+                <% end %>
                 <%# description %>
-                <p class="card-text text-truncate"><%= space.description %></p>
-                <a href="spaces/<%= space.id %>" class="btn btn-outline-primary spacecard-book-button">Details</a>
+                <p class="card-text"><%= booking[:date] %></p>
               </div>
             </div>
           </div>

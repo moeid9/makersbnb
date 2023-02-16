@@ -58,16 +58,16 @@ class MakersRepository
   end
 
   def sign_in(email, submitted_password)
-    maker = find_by_email(email)
+    user = find_by_email(email)
 
     begin
-      return nil if maker.num_tuples.zero?
+      return nil if user.num_tuples.zero?
     rescue => exception
-      return nil if maker.nil?
+      return nil if user.nil?
     end
 
     # Compare the submitted password with the encrypted one saved in the database
-    if maker.password == BCrypt::Password.new(maker.password)
+    if BCrypt::Password.new(user.password) == submitted_password
       return true
     else
       return false

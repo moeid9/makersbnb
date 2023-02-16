@@ -38,14 +38,14 @@ CREATE TABLE "bookings" (
 ALTER TABLE
   "spaces"
 ADD
-  FOREIGN KEY ("maker_id") REFERENCES "makers" ("id");
+  FOREIGN KEY ("maker_id") REFERENCES "makers" ("id") ON DELETE CASCADE;
 
 ALTER TABLE
   "bookings"
 ADD
-  FOREIGN KEY ("requested_space_id") REFERENCES "spaces" ("id");
+  FOREIGN KEY ("requested_space_id") REFERENCES "spaces" ("id") ON DELETE CASCADE;
 
 ALTER TABLE
   "bookings"
 ADD
-  FOREIGN KEY ("requested_user_id") REFERENCES "users" ("id");
+  FOREIGN KEY ("requested_user_id") REFERENCES "users" ("id") ON DELETE CASCADE;
