@@ -65,7 +65,7 @@ describe Application do
       post "/makers/login",
            { email: "",
              password: "" }
-      follow_redirect!
+      # follow_redirect!
 
       expect(last_response.status).to eq(200)
       expect(last_response.body).to include("<h1>Makers Login</h1>")

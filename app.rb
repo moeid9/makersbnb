@@ -1,6 +1,7 @@
 require "sinatra/base"
 require "sinatra/reloader"
 require "rack-flash"
+require 'date'
 
 require "./lib/database_connection.rb"
 require "./lib/space.rb"
@@ -72,7 +73,8 @@ class Application < Sinatra::Base
     password = params[:password]
 
     if email.nil? || password.nil? || email == "" || password == ""
-      redirect "/makers/login"
+      flash.now[:message] = "Empty inputs are not acceptable. Please enter again."
+      return erb(:makers_login)
     else
       maker = repo.find_by_email(email)
 
@@ -80,7 +82,6 @@ class Application < Sinatra::Base
       # checking the password. In a real
       # project, you should encrypt the password
       # stored in the database.
-      p repo.sign_in(email, password)
 
       if repo.sign_in(email, password)
         # Set the user ID in session
@@ -103,6 +104,7 @@ class Application < Sinatra::Base
     password = params[:password]
 
     if name.nil? || email.nil? || password.nil? || name == "" || email == "" || password == ""
+      flash.now[:message] = "Empty inputs are not acceptable. Please enter again."
       return erb(:users_signup)
     else
       new_user = Users.new
@@ -127,6 +129,7 @@ class Application < Sinatra::Base
     password = params[:password]
 
     if email.nil? || password.nil? || email == "" || password == ""
+      flash.now[:message] = "Empty inputs are not acceptable. Please enter again."
       return erb(:users_login)
     else
       user = repo.find_by_email(email)
@@ -183,6 +186,9 @@ class Application < Sinatra::Base
     if session[:maker_id]
       @maker = maker_repo.find(session[:maker_id])
       @spaces = space_repo.all
+      # image_links = ["https://tinyurl.com/33a8ej3w", "https://tinyurl.com/2sf43hmc", "https://tinyurl.com/4f6ftbmx", "https://tinyurl.com/2yuzk6bs", "https://tinyurl.com/4xtw833j", "https://tinyurl.com/32pd2as4", "https://tinyurl.com/4hnspe4t", "https://tinyurl.com/43z3r7hh", "https://tinyurl.com/yt7ubuh3", "https://tinyurl.com/4hv6j2fb"]
+
+      # @photos = image_links.sample
       return erb(:spaces)
     else
       redirect "/makers/login"
@@ -201,28 +207,30 @@ class Application < Sinatra::Base
     end
   end
 
-  get '/spaces/:id/book' do
-    space_repo = SpaceRepository.new
+  get "/bookings" do
     maker_repo = MakersRepository.new
+    space_repo = SpaceRepository.new
     if session[:maker_id]
-      @maker = maker_repo.find(session[:maker_id])
-      @space = space_repo.find_by_id(params[:id])
-      return erb(:booking_confirmation)
+      flash[:message] = "You are not allowed to make a booking as a maker."
+      redirect "/spaces"
+    elsif session[:user_id]
+      @user = user_repo.find(session[:user_id])
+      # pass a list of spaces 
+      @spaces = space_repo.all
+      return erb :bookings
     else
-      redirect "/makers/login"
+      flash[:message] = "You have to log in before making a booking."
+      redirect "/users/login"
     end
   end
 
-  post '/spaces/book' do
+  post "/bookings" do
     space_repo = SpaceRepository.new
-    user_repo = UsersRepository.new
-    booking_repo = BookingRepository.new
-
-    space = space_repo.find_by_id(params[:id])
-    user = maker_repo.find(session[:user_id])
-    new_booking = Booking.new
-    new_booking.confirmed = false
-    new_booking.requested_space_id = space.id
-    new_booking.requested_user_id = user.id
+    # get inputs from the user
+    # get the user_id from session
+    # fetch data from space database and find a space based on id
+    #  check the availability
+    #   - if okay: redirect to /spaces with a successful message
+    #   - not okay: redirect to /bookings with a error message
   end
 end
