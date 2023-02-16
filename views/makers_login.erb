@@ -27,12 +27,12 @@
         <form action="/makers/login" method="POST">
           <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Email address</label>
-            <input type="email" class="form-control" name="email">
+            <input type="email" class="form-control" name="email" value="black_jack@email.com">
             <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
           </div>
           <div class="mb-3">
             <label for="exampleInputPassword1" class="form-label">Password</label>
-            <input type="password" class="form-control" name="password" >
+            <input type="password" class="form-control" name="password" value="giant">
           </div>
           <% if flash[:message] %>
             <div class="alert alert-danger" role="alert">
@@ -42,6 +42,9 @@
           <div class="login-button-rapper">
             <button type="submit" class="btn btn-primary">Login</button>
             <a class="btn btn-outline-primary" href="/makers/signup">Signup</a>
+          </div>
+          <div class="mt-4 text-center">
+            <a href="/users/login">Log in as user?</a>
           </div>
         </form>
       </div>

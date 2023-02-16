@@ -24,7 +24,11 @@
             <div class="navbar-nav me-auto mb-2 mb-lg-0">
               <% if session[:maker_id] %>
                 <a class="nav-link" aria-current="page" href="/spaces">Spaces</a>
-                <a class="nav-link" href="#">Bookings</a>
+                <a class="nav-link" href="/spaces/create">Create Spaces</a>
+                <a class="nav-link" href="/makers/confirmation">Confirm Bookings</a>
+                <a class="nav-link" href="/makers/my-spaces">My Spaces</a>
+              <% elsif session[:user_id] %>
+                <a class="nav-link" aria-current="page" href="/spaces">Spaces</a>
               <% end %>
             </div>
             <% if session[:maker_id] %>
@@ -33,8 +37,15 @@
                 </div>
                 <a class="btn btn-outline-danger" href="/logout">Logout</a>
               </div>
+            <% elsif session[:user_id] %>
+              <div style="display: flex; gap: 20px; align-items:center">
+                <div>Logged in As <span class="user-name-container"><%= @user.name %></span>
+                </div>
+                <a class="btn btn-outline-danger" href="/logout">Logout</a>
+              </div>
             <% else %>
               <a class="btn btn-outline-primary" href="/makers/login">Makers Login</a>
+              <a class="btn btn-outline-primary ms-2" href="/users/login">Users Login</a>
             <% end %>
           </div>
         </div>
@@ -49,7 +60,9 @@
         <p>Price per night: £<%= @space.price %></p>
         <p>Available: <%= @space.date %></p>
         <p>Location: <%= @space.location %></p>
-        <a href="/bookings/<%= @space.id %>" class="btn btn-primary">Book</a>
+        <% if session[:user_id] %>
+          <a href="/bookings/<%= @space.id %>" class="btn btn-primary">Book</a>
+        <% end %>
         <a href="/spaces" class="btn btn-outline-primary">Go back</a>
       </div>
     </main>

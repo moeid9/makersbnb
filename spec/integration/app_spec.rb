@@ -32,8 +32,8 @@ describe Application do
       expect(response.status).to eq(200)
       expect(response.body).to include("<h1>Makers Login</h1>")
       expect(response.body).to include('<form action="/makers/login" method="POST">')
-      expect(response.body).to include('<input type="email" class="form-control" name="email">')
-      expect(response.body).to include('<input type="password" class="form-control" name="password" >')
+      expect(response.body).to include('input type="email" class="form-control" name="email"')
+      expect(response.body).to include('input type="password" class="form-control" name="password"')
     end
   end
 
@@ -58,7 +58,7 @@ describe Application do
       follow_redirect!
 
       expect(last_response.status).to eq(200)
-      expect(last_response.body).to include("<h1>Book a Space</h1>")
+      expect(last_response.body).to include("<h1>Spaces</h1>")
     end
 
     it "should redirect to makers/login if empty inputs are given" do
@@ -164,8 +164,8 @@ describe Application do
       expect(response.status).to eq(200)
       expect(response.body).to include("<h1>Login to your Account</h1>")
       expect(response.body).to include('<form action="/users/login" method="POST">')
-      expect(response.body).to include('<input type="email" class="form-control" name="email">')
-      expect(response.body).to include('<input type="password" class="form-control" name="password">')
+      expect(response.body).to include('input type="email" class="form-control" name="email"')
+      expect(response.body).to include('input type="password" class="form-control" name="password"')
     end
   end
 
@@ -206,7 +206,7 @@ describe Application do
       get "/spaces", {}, { "rack.session" => { maker_id: 1 } }
 
       expect(last_response.status).to eq(200)
-      expect(last_response.body).to include("<h1>Book a Space</h1>")
+      expect(last_response.body).to include("<h1>Spaces</h1>")
     end
 
     it "should redirect to login page with a message without logging in" do
@@ -214,7 +214,7 @@ describe Application do
       follow_redirect!
 
       expect(last_response.status).to eq(200)
-      expect(last_response.body).to include("<h1>Makers Login</h1>")
+      expect(last_response.body).to include("<h1>Login to your Account</h1>")
     end
   end
   # GET /spaces/create

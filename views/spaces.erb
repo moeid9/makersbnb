@@ -21,21 +21,23 @@
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <% if session[:maker_id] %>
-              <div class="navbar-nav me-auto mb-2 mb-lg-0">
+            <div class="navbar-nav me-auto mb-2 mb-lg-0">
+              <% if session[:maker_id] %>
                 <a class="nav-link" aria-current="page" href="/spaces">Spaces</a>
                 <a class="nav-link" href="/spaces/create">Create Spaces</a>
                 <a class="nav-link" href="/makers/confirmation">Confirm Bookings</a>
-              </div>
+                <a class="nav-link" href="/makers/my-spaces">My Spaces</a>
+              <% elsif session[:user_id] %>
+                <a class="nav-link" aria-current="page" href="/spaces">Spaces</a>
+              <% end %>
+            </div>
+            <% if session[:maker_id] %>
               <div style="display: flex; gap: 20px; align-items:center">
                 <div>Logged in As <span class="user-name-container"><%= @maker.name %></span>
                 </div>
                 <a class="btn btn-outline-danger" href="/logout">Logout</a>
               </div>
             <% elsif session[:user_id] %>
-              <div class="navbar-nav me-auto mb-2 mb-lg-0">
-                <a class="nav-link" aria-current="page" href="/spaces">Spaces</a>
-              </div>
               <div style="display: flex; gap: 20px; align-items:center">
                 <div>Logged in As <span class="user-name-container"><%= @user.name %></span>
                 </div>
@@ -43,6 +45,7 @@
               </div>
             <% else %>
               <a class="btn btn-outline-primary" href="/makers/login">Makers Login</a>
+              <a class="btn btn-outline-primary ms-2" href="/users/login">Users Login</a>
             <% end %>
           </div>
         </div>
@@ -50,15 +53,18 @@
     </header>
     <main>
       <div class="container">
-        <h1>Book a Space</h1>
+        <h1>Spaces</h1>
         <!-- Book space, list available dates etc -->
       </div>
-        <% if flash[:message] %>
-            <div class="alert alert-info container" role="alert">
-              <%= flash[:message] %>
-            </div>
-          <% end %>
+      <% if flash[:message] %>
+        <div class="alert alert-info container" role="alert">
+          <%= flash[:message] %>
+        </div>
+      <% end %>
       <div class="container d-flex flex-wrap" id="spaces-container">
+        <% if @spaces.length == 0 %>
+          <p class="mt-4">There is no booking for your spaces.</p>
+        <% end %>
         <% @spaces.each do |space| %>
           <!-- Table containing all the spaces available to book -->
           <div class="col-12 col-md-6 col-xl-4 p-2" id="space">
@@ -70,8 +76,8 @@
               <div class="card-body">
                 <h3 class="card-title"><%= space.name %></h3>
                 <%# description %>
-                <p class="card-text"><%= space.description %></p>
-                <a href="spaces/<%= space.id %>" class="btn btn-outline-primary spacecard-book-button">Book</a>
+                <p class="card-text text-truncate"><%= space.description %></p>
+                <a href="spaces/<%= space.id %>" class="btn btn-outline-primary spacecard-book-button">Details</a>
               </div>
             </div>
           </div>
