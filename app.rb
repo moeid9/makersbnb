@@ -171,10 +171,12 @@ class Application < Sinatra::Base
       new_space.description = params[:description]
       new_space.price = params[:price]
       new_space.date = params[:date]
-      new_space.available = params[:available]
-      new_space.maker_id = params[:maker_id]
+      new_space.available = true
+      new_space.maker_id = @maker.id
 
       space_repo.create(new_space)
+      
+      redirect('/spaces')
     else
       redirect "/makers/login"
     end
