@@ -227,8 +227,12 @@ class Application < Sinatra::Base
   post "/bookings" do
     space_repo = SpaceRepository.new
     # get inputs from the user
+    date = params[:date]
+    space_id = params[:space_id]
     # get the user_id from session
+    user_id = session[:user_id]
     # fetch data from space database and find a space based on id
+    selected_space = space_repo.find(space_id)
     #  check the availability
     #   - if okay: redirect to /spaces with a successful message
     #   - not okay: redirect to /bookings with a error message
