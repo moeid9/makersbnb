@@ -52,15 +52,14 @@
           <input type="date" name="date" class="form-control" min="<% DateTime.now.strftime("%Y-%m-%y") %>">
         </div>
         <div class="mb-3">
-          <label for="date" class="form-label">Which day do you want to book?</label>
-          <input type="date" name="date" class="form-control" min="<% DateTime.now.strftime("%Y-%m-%y") %>">
+          <label for="space_id" class="form-label" >Which place do you want to book?</label>
+          <select name="space_id" class="form-select">
+            <option selected disabled>pick a place</option>
+            <% @spaces.each do |space| %>
+              <option value="<%= space.id %>"><%= space.name %></option>
+            <% end %>
+          </select>
         </div>
-        <p>Which place do you want to book?</p>
-        <select name="space">
-          <% @spaces.each do |space| %>
-            <option value="<%= space.id %>"><%= space.name %></option>
-          <% end %>
-        </select>
         <div class="login-button-rapper">
             <button type="submit" class="btn btn-primary">Make a booking</button>
             <a class="btn btn-outline-danger" href="/spaces">Cancel</a>
