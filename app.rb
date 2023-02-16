@@ -214,22 +214,22 @@ class Application < Sinatra::Base
     end
   end
 
-  get "/bookings" do
-    maker_repo = MakersRepository.new
-    space_repo = SpaceRepository.new
-    if session[:maker_id]
-      flash[:message] = "You are not allowed to make a booking as a maker."
-      redirect "/spaces"
-    elsif session[:user_id]
-      @user = user_repo.find(session[:user_id])
-      # pass a list of spaces 
-      @spaces = space_repo.all
-      return erb :bookings
-    else
-      flash[:message] = "You have to log in before making a booking."
-      redirect "/users/login"
-    end
-  end
+  # get "/bookings" do
+  #   maker_repo = MakersRepository.new
+  #   space_repo = SpaceRepository.new
+  #   if session[:maker_id]
+  #     flash[:message] = "You are not allowed to make a booking as a maker."
+  #     redirect "/spaces"
+  #   elsif session[:user_id]
+  #     @user = user_repo.find(session[:user_id])
+  #     # pass a list of spaces 
+  #     @spaces = space_repo.all
+  #     return erb :bookings
+  #   else
+  #     flash[:message] = "You have to log in before making a booking."
+  #     redirect "/users/login"
+  #   end
+  # end
 
   post "/bookings" do
     space_repo = SpaceRepository.new
