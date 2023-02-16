@@ -72,10 +72,15 @@
               <img class="img-fluid" src="<%= image_links.sample %>">
               <div class="card-body">
                 <h3 class="card-title"><%= space.name %></h3>
+                <% if space.available == "f" %>
+                  <div class="badge text-bg-success mb-2">Confirmed Booking</div>
+                <% end %>
                 <%# description %>
                 <p class="card-text text-truncate"><%= space.description %></p>
                 <a href="/spaces/<%= space.id %>" class="btn btn-outline-primary spacecard-book-button">More Details</a>
-                <a href="/spaces/delete/<%= space.id %>" class="btn mt-2 btn-outline-danger spacecard-book-button">Delete</a>
+                <% if space.available == "t" %>
+                  <a href="/spaces/delete/<%= space.id %>" class="btn mt-2 btn-outline-danger spacecard-book-button">Delete</a>
+                <% end %>
               </div>
             </div>
           </div>

@@ -289,7 +289,7 @@ class Application < Sinatra::Base
     book_repo = BookingRepository.new
     space_repo = SpaceRepository.new
     @booking = book_repo.find_by_space_id(params[:space_id])
-    book_repo.confirm(@booking.id)
+    book_repo.confirm(@booking.id, params[:space_id])
     space_repo.update(params[:space_id], { available: false })
     flash[:message] = "You have confirmed a booking."
     redirect "/makers/confirmation"

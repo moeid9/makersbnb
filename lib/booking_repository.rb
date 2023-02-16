@@ -42,11 +42,11 @@ class BookingRepository
     return booking
   end
 
-  def confirm(id) #maker -chris
-    sql = "UPDATE bookings SET confirmed=TRUE WHERE id = $1;"
-    result = DatabaseConnection.exec_params(sql, [id])
-
-    return
+  def confirm(id, space_id) #maker -chris
+    confirm_sql = "UPDATE bookings SET confirmed=TRUE WHERE id = $1;"
+    DatabaseConnection.exec_params(confirm_sql, [id])
+    reject_others_sql = "DELETE FROM bookings WHERE id != $1 AND requested_space_id = $2"
+    DatabaseConnection.exec_params(reject_others_sql, [id, space_id])
   end
 
   def find_by_space_id(space_id) #dora
