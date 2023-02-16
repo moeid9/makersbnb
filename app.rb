@@ -163,6 +163,11 @@ class Application < Sinatra::Base
   post "/spaces/create" do
     space_repo = SpaceRepository.new
     maker_repo = MakersRepository.new
+    if name.nil? || location.nil? || price.nil? || description.nil? || date.nil? || name == "" || location == "" || price == "" || description == "" || date == ""
+      flash.now[:message] = "Empty inputs are not acceptable. Please enter again."
+      return erb(:makers_signup)
+    end
+    
     if session[:maker_id]
       @maker = maker_repo.find(session[:maker_id])
       new_space = Space.new
