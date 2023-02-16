@@ -165,7 +165,7 @@ describe Application do
       expect(response.body).to include("<h1>Login to your Account</h1>")
       expect(response.body).to include('<form action="/users/login" method="POST">')
       expect(response.body).to include('<input type="email" class="form-control" name="email">')
-      expect(response.body).to include('<input type="password" class="form-control" name="password" >')
+      expect(response.body).to include('<input type="password" class="form-control" name="password">')
     end
   end
 
@@ -249,7 +249,7 @@ describe Application do
       follow_redirect!
 
       expect(last_response.status).to eq(200)
-      expect(last_response.body).to include("<h1>Makers Login</h1>")
+      expect(last_response.body).to include("<h1>MakersBnB</h1>")
     end
   end
 

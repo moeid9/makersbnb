@@ -21,15 +21,23 @@
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div class="navbar-nav me-auto mb-2 mb-lg-0">
-              <% if session[:maker_id] %>
-                <a class="nav-link" aria-current="page" href="/spaces">Spaces</a>
-                <a class="nav-link" href="#">Bookings</a>
-              <% end %>
-            </div>
             <% if session[:maker_id] %>
+              <div class="navbar-nav me-auto mb-2 mb-lg-0">
+                <a class="nav-link" aria-current="page" href="/spaces">Spaces</a>
+                <a class="nav-link" href="/spaces/create">Create Spaces</a>
+                <a class="nav-link" href="/makers/confirmation">Confirm Bookings</a>
+              </div>
               <div style="display: flex; gap: 20px; align-items:center">
                 <div>Logged in As <span class="user-name-container"><%= @maker.name %></span>
+                </div>
+                <a class="btn btn-outline-danger" href="/logout">Logout</a>
+              </div>
+            <% elsif session[:user_id] %>
+              <div class="navbar-nav me-auto mb-2 mb-lg-0">
+                <a class="nav-link" aria-current="page" href="/spaces">Spaces</a>
+              </div>
+              <div style="display: flex; gap: 20px; align-items:center">
+                <div>Logged in As <span class="user-name-container"><%= @user.name %></span>
                 </div>
                 <a class="btn btn-outline-danger" href="/logout">Logout</a>
               </div>
@@ -45,6 +53,11 @@
         <h1>Book a Space</h1>
         <!-- Book space, list available dates etc -->
       </div>
+        <% if flash[:message] %>
+            <div class="alert alert-info container" role="alert">
+              <%= flash[:message] %>
+            </div>
+          <% end %>
       <div class="container d-flex flex-wrap" id="spaces-container">
         <% @spaces.each do |space| %>
           <!-- Table containing all the spaces available to book -->

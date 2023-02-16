@@ -34,7 +34,7 @@ class BookingRepository
 	
 	def find_by_booking_id(id) #terry
     sql = "SELECT id, confirmed, requested_space_id, requested_user_id FROM bookings WHERE id = $1;"
-    result = DatabaseConnection.exec_params(sql, [id])[0]
+    result = DatabaseConnection.exec_params(sql, [id]).first
     
     booking = Bookings.new
     booking.id = result['id'].to_i
@@ -44,10 +44,6 @@ class BookingRepository
     
     return booking
 	end
-
-	# def delete(id)
-
-	# end
 
 	def confirm(id)#maker -chris
     sql = 'UPDATE bookings SET confirmed=TRUE WHERE id = $1;'
@@ -58,8 +54,8 @@ class BookingRepository
 
 	def find_by_space_id(space_id) #dora
     sql = "SELECT id, confirmed, requested_space_id, requested_user_id FROM bookings WHERE requested_space_id = $1;"
-    result = DatabaseConnection.exec_params(sql, [space_id])[0]
-    
+    result = DatabaseConnection.exec_params(sql, [space_id]).first
+
     booking = Bookings.new
     booking.id = result['id'].to_i
     booking.confirmed = result['confirmed']
@@ -70,15 +66,19 @@ class BookingRepository
 
 	def find_by_user_id(user_id) #Dora
     sql = "SELECT id, confirmed, requested_space_id, requested_user_id FROM bookings WHERE requested_user_id = $1;"
-    result = DatabaseConnection.exec_params(sql, [user_id])[0]
+    result = DatabaseConnection.exec_params(sql, [user_id]).first
     
     booking = Bookings.new
     booking.id = result['id'].to_i
     booking.confirmed = result['confirmed']
     booking.requested_space_id = result['requested_space_id'].to_i
     booking.requested_user_id = result['requested_user_id'].to_i
-    
+  
     return booking
-	end
-
+  end
+  
+  def delete(id)
+    sql = "DELETE FROM bookings WHERE id = $1;"
+    result_set = DatabaseConnection.exec_params(sql, [id])
+  end
 end

@@ -44,10 +44,10 @@
         <h5>Date: </h5>
         <p><%= @space.date%></p>
         </div>
-        <form action="/spaces/<% @space.id %>/book" method="POST">
+        <form action="/bookings/<%= @space.id %>" method="POST">
         <div class="create-booking-button-wrapper">
-        <button type="submit" class="btn btn-primary">Create</button>
-        <a class="btn btn-outline-danger" href="/makers/signup">Cancel</a>
+        <button type="submit" class="btn btn-primary">Confirm</button>
+        <a class="btn btn-outline-danger" href="/">Cancel</a>
         </div>
         </div>
       </div>

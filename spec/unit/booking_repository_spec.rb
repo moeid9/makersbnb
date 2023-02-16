@@ -38,7 +38,6 @@ describe BookingRepository do
     booking = @repo.find_by_booking_id(3)
     
     expect(booking.id).to eq 3
-    p booking.confirmed
     expect(booking.confirmed).to eq "f"
     expect(booking.requested_space_id).to eq 3
     expect(booking.requested_user_id).to eq 3

@@ -28,8 +28,11 @@ class Application < Sinatra::Base
   get "/" do
     space_repo = SpaceRepository.new
     maker_repo = MakersRepository.new
+    user_repo = UsersRepository.new
     if session[:maker_id]
       @maker = maker_repo.find(session[:maker_id])
+    else session[:user_id]
+      @user = user_repo.find(session[:user_id])
     end
     return erb(:index)
   end
@@ -177,7 +180,7 @@ class Application < Sinatra::Base
       new_space.price = params[:price]
       new_space.date = params[:date]
       new_space.available = true
-      new_space.maker_id = @maker.id
+      new_space.maker_id = session[:maker_id]
 
       space_repo.create(new_space)
       
@@ -190,8 +193,16 @@ class Application < Sinatra::Base
   get "/spaces" do
     space_repo = SpaceRepository.new
     maker_repo = MakersRepository.new
+    user_repo = UsersRepository.new
     if session[:maker_id]
       @maker = maker_repo.find(session[:maker_id])
+      @spaces = space_repo.all
+      # image_links = ["https://tinyurl.com/33a8ej3w", "https://tinyurl.com/2sf43hmc", "https://tinyurl.com/4f6ftbmx", "https://tinyurl.com/2yuzk6bs", "https://tinyurl.com/4xtw833j", "https://tinyurl.com/32pd2as4", "https://tinyurl.com/4hnspe4t", "https://tinyurl.com/43z3r7hh", "https://tinyurl.com/yt7ubuh3", "https://tinyurl.com/4hv6j2fb"]
+
+      # @photos = image_links.sample
+      return erb(:spaces)
+    elsif session[:user_id]
+      @user = user_repo.find(session[:user_id])
       @spaces = space_repo.all
       # image_links = ["https://tinyurl.com/33a8ej3w", "https://tinyurl.com/2sf43hmc", "https://tinyurl.com/4f6ftbmx", "https://tinyurl.com/2yuzk6bs", "https://tinyurl.com/4xtw833j", "https://tinyurl.com/32pd2as4", "https://tinyurl.com/4hnspe4t", "https://tinyurl.com/43z3r7hh", "https://tinyurl.com/yt7ubuh3", "https://tinyurl.com/4hv6j2fb"]
 
@@ -204,44 +215,70 @@ class Application < Sinatra::Base
 
   get "/spaces/:id" do
     repo = SpaceRepository.new
+    user_repo = UsersRepository.new
     maker_repo = MakersRepository.new
     if session[:maker_id]
       @maker = maker_repo.find(session[:maker_id])
       @space = repo.find_by_id(params[:id])
       return erb(:space_single)
+    elsif session[:user_id]
+      @user = user_repo.find(session[:user_id])
+      @space = repo.find_by_id(params[:id])
+      return erb(:space_single)
     else
-      redirect "/makers/login"
+      redirect "/"
     end
   end
 
-  # get "/bookings" do
-  #   maker_repo = MakersRepository.new
-  #   space_repo = SpaceRepository.new
-  #   if session[:maker_id]
-  #     flash[:message] = "You are not allowed to make a booking as a maker."
-  #     redirect "/spaces"
-  #   elsif session[:user_id]
-  #     @user = user_repo.find(session[:user_id])
-  #     # pass a list of spaces 
-  #     @spaces = space_repo.all
-  #     return erb :bookings
-  #   else
-  #     flash[:message] = "You have to log in before making a booking."
-  #     redirect "/users/login"
-  #   end
-  # end
-
-  post "/bookings" do
-    space_repo = SpaceRepository.new
-    # get inputs from the user
-    date = params[:date]
-    space_id = params[:space_id]
-    # get the user_id from session
-    user_id = session[:user_id]
-    # fetch data from space database and find a space based on id
-    selected_space = space_repo.find(space_id)
-    #  check the availability
-    #   - if okay: redirect to /spaces with a successful message
-    #   - not okay: redirect to /bookings with a error message
+  get "/bookings/:space_id" do
+    if session[:user_id]
+      space_repo = SpaceRepository.new
+      @space = space_repo.find_by_id(params[:space_id])
+      return erb(:booking_confirmation)
+    else
+      flash[:message] = "You have to log in as a user to make a booking."
+      redirect "/users/login"
+    end
   end
+
+  post "/bookings/:space_id" do
+    booking_repo = BookingRepository.new
+    new_booking = Bookings.new
+    new_booking.confirmed = false
+    new_booking.requested_space_id = params[:space_id]
+    new_booking.requested_user_id = session[:user_id]
+    booking_repo.create(new_booking)
+    flash[:message] = "Your booking has been submitted! Maker will confirm it soon."
+    redirect "/spaces"
+  end
+
+  get "/makers/confirmation" do
+    # if user has maker_id
+    if session[:maker_id]
+      maker_repo = MakersRepository.new
+      space_repo = SpaceRepository.new
+      @maker = maker_repo.find(session[:maker_id])
+      @spaces = space_repo.find_by_maker(session[:maker_id])
+      return erb(:maker_confirmation)
+    else
+      flash[:message] = "You have to log in as a maker to confirm bookings."
+      redirect "/makers/login"
+    end
+  end
+  
+  get "/makers/confirm_request/:space_id" do
+    book_repo = BookingRepository.new
+    space_repo = SpaceRepository.new
+    @booking = book_repo.find_by_space_id(params[:space_id])
+    book_repo.delete(@booking.id)
+    space_repo.delete(params[:space_id])
+    flash[:message] = "You have confirmed a booking."
+    redirect "/makers/confirmation"
+  end
+
+  # get "/makers/delete_request/:space_id" do
+  #   book_repo = BookingRepository.new
+  #   @booking = book_repo.find_by_space_id(params[:space_id])
+  #   book_repo.delete(@booking.id)
+  # end
 end
