@@ -1,5 +1,5 @@
 require_relative "./maker"
-require 'bcrypt'
+require "bcrypt"
 
 class MakersRepository
 
@@ -44,7 +44,7 @@ class MakersRepository
       maker = Makers.new
       maker.id = record["id"]
       maker.name = record["name"]
-      maker.email = record['email']
+      maker.email = record["email"]
       maker.password = record["password"]
       return maker
     end
@@ -59,8 +59,12 @@ class MakersRepository
 
   def sign_in(email, submitted_password)
     maker = find_by_email(email)
-  
-    return nil if maker.nil?
+
+    begin
+      return nil if maker.num_tuples.zero?
+    rescue => exception
+      return nil if maker.nil?
+    end
 
     # Compare the submitted password with the encrypted one saved in the database
     if maker.password == BCrypt::Password.new(maker.password)

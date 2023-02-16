@@ -51,14 +51,34 @@ describe Application do
   end
 
   context "POST /makers/login" do
-    it "should log the user in" do
-      response = post(
-        "/makers/login",
-        email: "black_jack@email.com",
-        password: "giant",
-      )
+    it "should log the user in and redirect to /spaces if correct credentials are given" do
+      post "/makers/login",
+           { email: "black_jack@email.com",
+             password: "giant" }
+      follow_redirect!
 
-      expect(response.status).to eq(302) # => redirection code
+      expect(last_response.status).to eq(200)
+      expect(last_response.body).to include("<h1>Book a Space</h1>")
+    end
+
+    it "should redirect to makers/login if empty inputs are given" do
+      post "/makers/login",
+           { email: "",
+             password: "" }
+      follow_redirect!
+
+      expect(last_response.status).to eq(200)
+      expect(last_response.body).to include("<h1>Makers Login</h1>")
+    end
+
+    it "should redirect to makers/login if wrong inputs are given" do
+      post "/makers/login",
+           { email: "no_one@gmail.com",
+             password: "password" }
+      follow_redirect!
+
+      expect(last_response.status).to eq(200)
+      expect(last_response.body).to include("<h1>Makers Login</h1>")
     end
   end
 
@@ -81,24 +101,24 @@ describe Application do
         email: "",
         password: "",
       )
-      expect(response.body).to include('<h1>Makers Sign Up</h1>')
+      expect(response.body).to include("<h1>Makers Sign Up</h1>")
       expect(response.status).to eq(200)
     end
 
     it "should go back to signup page if no inputs are given" do
       response = post("/makers/signup")
 
-      expect(response.body).to include('<h1>Makers Sign Up</h1>')
+      expect(response.body).to include("<h1>Makers Sign Up</h1>")
       expect(response.status).to eq(200)
     end
   end
-  
+
   context "GET /users/signup" do
     it "should get the signup page for users" do
       response = get("/users/signup")
 
       expect(response.status).to eq(200)
-      expect(response.body).to include('<h1>Users Sign Up</h1>')
+      expect(response.body).to include("<h1>Users Sign Up</h1>")
       expect(response.body).to include('<form action="/users/signup" method="POST">')
       expect(response.body).to include('<input type="name" class="form-control" name="name">')
       expect(response.body).to include('<label for="exampleInputEmail1" class="form-label">Email address</label>')
@@ -112,14 +132,14 @@ describe Application do
         email: "",
         password: "",
       )
-      expect(response.body).to include('<h1>Users Sign Up</h1>')
+      expect(response.body).to include("<h1>Users Sign Up</h1>")
       expect(response.status).to eq(200)
     end
 
     it "should go back to signup page if no inputs are given" do
       response = post("/users/signup")
 
-      expect(response.body).to include('<h1>Users Sign Up</h1>')
+      expect(response.body).to include("<h1>Users Sign Up</h1>")
       expect(response.status).to eq(200)
     end
   end
@@ -166,7 +186,7 @@ describe Application do
         email: "",
         password: "",
       )
-      expect(response.body).to include('<h1>Login to your Account</h1>')
+      expect(response.body).to include("<h1>Login to your Account</h1>")
       expect(response.status).to eq(200)
     end
 
@@ -175,18 +195,26 @@ describe Application do
         "/users/login"
       )
 
-      expect(response.body).to include('<h1>Login to your Account</h1>')
+      expect(response.body).to include("<h1>Login to your Account</h1>")
       expect(response.status).to eq(200)
     end
   end
 
   # GET /spaces
   context "GET /spaces" do
-    it "should return all the spaces" do
-      response = get("/spaces")
+    it "should return all the spaces after logging in as a maker" do
+      get "/spaces", {}, { "rack.session" => { maker_id: 1 } }
 
-      expect(response.status).to eq(200)
-      expect(response.body).to include("<h1>Book a Space</h1>")
+      expect(last_response.status).to eq(200)
+      expect(last_response.body).to include("<h1>Book a Space</h1>")
+    end
+
+    it "should redirect to login page with a message without logging in" do
+      get "/spaces"
+      follow_redirect!
+
+      expect(last_response.status).to eq(200)
+      expect(last_response.body).to include("<h1>Makers Login</h1>")
     end
   end
   # GET /spaces/create
@@ -197,7 +225,7 @@ describe Application do
       expect(response.status).to eq(302)
     end
   end
- 
+
   # PUT /spaces
   xcontext "PATCH /spaces" do
     it "should update a space" do
@@ -209,11 +237,19 @@ describe Application do
 
   # GET /spaces/:id
   context "GET /spaces/:id" do
-    it "should return a space with a given id" do
-      response = get("/spaces/1")
+    it "should return a space with a given id after logging in" do
+      get "/spaces/1", {}, { "rack.session" => { maker_id: 1 } }
 
-      expect(response.status).to eq(200)
-      expect(response.body).to include("<p>Location: London</p>")
+      expect(last_response.status).to eq(200)
+      expect(last_response.body).to include("<p>Location: London</p>")
+    end
+
+    it "should redirect to login page with a message without logging in" do
+      get "/spaces/1"
+      follow_redirect!
+
+      expect(last_response.status).to eq(200)
+      expect(last_response.body).to include("<h1>Makers Login</h1>")
     end
   end
 

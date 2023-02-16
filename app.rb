@@ -1,5 +1,6 @@
 require "sinatra/base"
 require "sinatra/reloader"
+require "rack-flash"
 
 require "./lib/database_connection.rb"
 require "./lib/space.rb"
@@ -17,7 +18,8 @@ class Application < Sinatra::Base
   configure :development do
     register Sinatra::Reloader
     also_reload "lib/maker_repository"
-    also_reload "lib/user_repositor"
+    also_reload "lib/user_repository"
+    use Rack::Flash
   end
 
   get "/" do
@@ -42,17 +44,18 @@ class Application < Sinatra::Base
     name = params[:name]
     email = params[:email]
     password = params[:password]
-    
+
     if name.nil? || email.nil? || password.nil? || name == "" || email == "" || password == ""
+      flash.now[:message] = "Empty inputs are not acceptable. Please enter again."
       return erb(:makers_signup)
     else
       new_maker = Makers.new
       new_maker.name = name
       new_maker.email = email
       new_maker.password = password
-  
+
       repo.create(new_maker)
-  
+
       return erb(:makers_login)
     end
   end
@@ -66,19 +69,24 @@ class Application < Sinatra::Base
     email = params[:email]
     password = params[:password]
 
-    maker = repo.find_by_email(email)
-
-    # This is a simplified way of
-    # checking the password. In a real
-    # project, you should encrypt the password
-    # stored in the database.
-
-    if repo.sign_in(email, password)
-      # Set the user ID in session
-      session[:maker_id] = maker.id
-      redirect "/spaces"
+    if email.nil? || password.nil? || email == "" || password == ""
+      redirect "/makers/login"
     else
-      redirect('/makers/login')
+      maker = repo.find_by_email(email)
+
+      # This is a simplified way of
+      # checking the password. In a real
+      # project, you should encrypt the password
+      # stored in the database.
+      p repo.sign_in(email, password)
+
+      if repo.sign_in(email, password)
+        # Set the user ID in session
+        session[:maker_id] = maker.id
+        redirect "/spaces"
+      else
+        redirect "/makers/login"
+      end
     end
   end
 
@@ -91,7 +99,7 @@ class Application < Sinatra::Base
     name = params[:name]
     email = params[:email]
     password = params[:password]
-    
+
     if name.nil? || email.nil? || password.nil? || name == "" || email == "" || password == ""
       return erb(:users_signup)
     else
@@ -99,9 +107,9 @@ class Application < Sinatra::Base
       new_user.name = name
       new_user.email = email
       new_user.password = password
-  
+
       repo.create(new_user)
-  
+
       return erb(:users_login)
     end
   end
@@ -120,7 +128,7 @@ class Application < Sinatra::Base
       return erb(:users_login)
     else
       user = repo.find_by_email(email)
-  
+
       if repo.sign_in(email, password)
         session[:user_id] = user.id
         redirect "/spaces"
@@ -136,18 +144,18 @@ class Application < Sinatra::Base
     redirect "/"
   end
 
-  get '/spaces/create' do
+  get "/spaces/create" do
     repo = SpaceRepository.new
     maker_repo = MakersRepository.new
     if session[:maker_id]
       @maker = maker_repo.find(session[:maker_id])
       return erb(:spaces_creation)
     else
-      redirect '/makers/login'
+      redirect "/makers/login"
     end
   end
 
-  post '/spaces/create' do
+  post "/spaces/create" do
     space_repo = SpaceRepository.new
     maker_repo = MakersRepository.new
     if session[:maker_id]
@@ -163,9 +171,8 @@ class Application < Sinatra::Base
       new_space.maker_id = params[:maker_id]
 
       space_repo.create(new_space)
-      
     else
-      redirect '/makers/login'
+      redirect "/makers/login"
     end
   end
 
@@ -177,7 +184,7 @@ class Application < Sinatra::Base
       @spaces = space_repo.all
       return erb(:spaces)
     else
-      redirect '/makers/login'
+      redirect "/makers/login"
     end
   end
 
@@ -189,8 +196,7 @@ class Application < Sinatra::Base
       @space = repo.find_by_id(params[:id])
       return erb(:space_single)
     else
-      redirect '/makers/login'
+      redirect "/makers/login"
     end
   end
-
 end
