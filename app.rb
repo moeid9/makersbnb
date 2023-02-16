@@ -9,6 +9,8 @@ require "./lib/maker.rb"
 require "./lib/maker_repository.rb"
 require "./lib/user.rb"
 require "./lib/user_repository.rb"
+require "./lib/booking.rb"
+require "./lib/booking_repository.rb"
 
 DatabaseConnection.connect("makersbnb_test")
 
@@ -160,7 +162,6 @@ class Application < Sinatra::Base
     maker_repo = MakersRepository.new
     if session[:maker_id]
       @maker = maker_repo.find(session[:maker_id])
-      @maker = maker_repo.find(session[:maker_id])
       new_space = Space.new
       new_space.name = params[:name]
       new_space.location = params[:location]
@@ -198,5 +199,30 @@ class Application < Sinatra::Base
     else
       redirect "/makers/login"
     end
+  end
+
+  get '/spaces/:id/book' do
+    space_repo = SpaceRepository.new
+    maker_repo = MakersRepository.new
+    if session[:maker_id]
+      @maker = maker_repo.find(session[:maker_id])
+      @space = space_repo.find_by_id(params[:id])
+      return erb(:booking_confirmation)
+    else
+      redirect "/makers/login"
+    end
+  end
+
+  post '/spaces/book' do
+    space_repo = SpaceRepository.new
+    user_repo = UsersRepository.new
+    booking_repo = BookingRepository.new
+
+    space = space_repo.find_by_id(params[:id])
+    user = maker_repo.find(session[:user_id])
+    new_booking = Booking.new
+    new_booking.confirmed = false
+    new_booking.requested_space_id = space.id
+    new_booking.requested_user_id = user.id
   end
 end

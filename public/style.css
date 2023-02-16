@@ -119,4 +119,15 @@ h1 {
     gap: 2rem;
     flex-direction: column;
   }
+
+  .create-booking-button-wrapper {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  
+  .create-booking-button-wrapper button,
+  .login-button-rapper a {
+    flex: 1;
+  }
 }
