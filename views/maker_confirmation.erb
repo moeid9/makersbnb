@@ -55,16 +55,16 @@
       <div class="container">
         <h1>Confirm Bookings</h1>
         <!-- Book space, list available dates etc -->
-      </div>
-      <% if flash[:message] %>
-        <div class="alert alert-info container" role="alert">
-          <%= flash[:message] %>
-        </div>
-      <% end %>
-      <div class="container d-flex flex-wrap" id="spaces-container">
+        <% if flash[:message] %>
+          <div class="alert alert-info container" role="alert">
+            <%= flash[:message] %>
+          </div>
+        <% end %>
         <% if @bookings.length == 0 %>
           <p class="mt-4">There is no booking for your spaces.</p>
         <% end %>
+      </div>
+      <div class="container d-flex flex-wrap" id="spaces-container">
         <% @bookings.each do |booking| %>
           <!-- Table containing all the spaces available to book -->
           <div class="col-12 col-md-6 col-xl-4 p-2" id="space">
