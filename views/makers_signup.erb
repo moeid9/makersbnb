@@ -37,6 +37,11 @@
             <label for="exampleInputPassword1" class="form-label">Password</label>
             <input type="password" class="form-control" name="password">
           </div>
+          <% if flash[:message] %>
+            <div class="alert alert-danger" role="alert">
+              <%= flash[:message] %>
+            </div>
+          <% end %>
           <div class="login-button-wrapper">
             <button type="submit" class="btn btn-primary">Submit</button>
             <a class="btn btn-outline-danger" href="/">Cancel</a>

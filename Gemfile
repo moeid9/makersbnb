@@ -15,3 +15,5 @@ gem "rspec", "~> 3.11"
 gem "rainbow", "~> 3.1"
 
 gem "bcrypt", "~> 3.1"
+
+gem "rack-flash3", "~> 1.0"
