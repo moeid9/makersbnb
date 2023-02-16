@@ -227,13 +227,13 @@ describe Application do
   end
 
   # PUT /spaces
-  xcontext "PATCH /spaces" do
-    it "should update a space" do
-      response = patch("/spaces")
+  # xcontext "PATCH /spaces" do
+  #   it "should update a space" do
+  #     response = patch("/spaces")
 
-      expect(response.status).to eq(200)
-    end
-  end
+  #     expect(response.status).to eq(200)
+  #   end
+  # end
 
   # GET /spaces/:id
   context "GET /spaces/:id" do
@@ -254,38 +254,38 @@ describe Application do
   end
 
   # GET /spaces/:maker_id
-  xcontext "GET /spaces/:maker_id" do
-    it "should return a list of spaces with a given maker id" do
-      response = get("/spaces/2")
+  # xcontext "GET /spaces/:maker_id" do
+  #   it "should return a list of spaces with a given maker id" do
+  #     response = get("/spaces/2")
 
-      expect(response.status).to eq(200)
-      expect(response.body).to include("<p>Location: Leeds</p>")
-      expect(response.body).to include("<p>Name: Space B</p>")
-      expect(response.body).to include("<p>Name: Space C</p>")
-    end
-  end
+  #     expect(response.status).to eq(200)
+  #     expect(response.body).to include("<p>Location: Leeds</p>")
+  #     expect(response.body).to include("<p>Name: Space B</p>")
+  #     expect(response.body).to include("<p>Name: Space C</p>")
+  #   end
+  # end
 
-  # GET /spaces/:date
-  xcontext "GET /spaces/:date" do
-    it "should return a list of spaces with a given date" do
-      response = get("/spaces/2022-02-14")
+  # # GET /spaces/:date
+  # xcontext "GET /spaces/:date" do
+  #   it "should return a list of spaces with a given date" do
+  #     response = get("/spaces/2022-02-14")
 
-      expect(response.status).to eq(200)
-      expect(response.body).to include("<p>Location: Leeds</p>")
-      expect(response.body).to include("<p>Name: Space B</p>")
-      expect(response.body).to include("<p>Name: Space C</p>")
-    end
-  end
+  #     expect(response.status).to eq(200)
+  #     expect(response.body).to include("<p>Location: Leeds</p>")
+  #     expect(response.body).to include("<p>Name: Space B</p>")
+  #     expect(response.body).to include("<p>Name: Space C</p>")
+  #   end
+  # end
 
-  # GET /spaces/:location
-  xcontext "GET /spaces/:location" do
-    it "should return a list of spaces with a given location" do
-      response = get("/spaces/leeds")
+  # # GET /spaces/:location
+  # xcontext "GET /spaces/:location" do
+  #   it "should return a list of spaces with a given location" do
+  #     response = get("/spaces/leeds")
 
-      expect(response.status).to eq(200)
-      expect(response.body).to include("<p>Location: Leeds</p>")
-      expect(response.body).to include("<p>Name: Space B</p>")
-      expect(response.body).to include("<p>Name: Space C</p>")
-    end
-  end
+  #     expect(response.status).to eq(200)
+  #     expect(response.body).to include("<p>Location: Leeds</p>")
+  #     expect(response.body).to include("<p>Name: Space B</p>")
+  #     expect(response.body).to include("<p>Name: Space C</p>")
+  #   end
+  # end
 end
