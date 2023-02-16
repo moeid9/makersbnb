@@ -49,7 +49,7 @@
         <p>Price per night: £<%= @space.price %></p>
         <p>Available: <%= @space.date %></p>
         <p>Location: <%= @space.location %></p>
-        <a href="/spaces/<%= space.id %>/book" class="btn btn-outline">Book</a>
+        <a href="/spaces/<%= @space.id %>/book" class="btn btn-outline">Book</a>
         <a href="/spaces" class="btn btn-outline-primary">Go back</a>
       </div>
     </main>
