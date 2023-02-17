@@ -253,6 +253,37 @@ describe Application do
     end
   end
 
+  context "GET /makers/confirmation" do
+    it "should return a message with no bookings when no booking has been made" do
+      get "/makers/confirmation", {}, { "rack.session" => { maker_id: 1 } }
+      
+      expect(last_response.status).to eq(200)
+      expect(last_response.body).to include('There is no booking for your spaces.')
+    end
+
+    it "should return a booking card when" do
+      
+      post "/bookings/1", {}, { "rack.session" => { user_id: 1 } }
+      get "/makers/confirmation", {}, { "rack.session" => { maker_id: 1 } }
+      
+      expect(last_response.status).to eq(200)
+      expect(last_response.body).to include('Space A')
+    end
+  end
+
+  context "GET /makers/confirm_request/:space_id" do
+    it "should get a booking confirmation message when a booking is confirmed" do
+    
+      post "/bookings/1", {}, { "rack.session" => { user_id: 1 } }
+      get "/makers/confirm_request/1", {}, { "rack.session" => { maker_id: 1 } }
+      follow_redirect!
+      
+      expect(last_response.status).to eq(200)
+      expect(last_response.body). to include('You have confirmed a booking.')
+    end
+  end
+
+
   # GET /spaces/:maker_id
   # xcontext "GET /spaces/:maker_id" do
   #   it "should return a list of spaces with a given maker id" do
