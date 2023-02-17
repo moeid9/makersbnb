@@ -288,4 +288,21 @@ describe Application do
   #     expect(response.body).to include("<p>Name: Space C</p>")
   #   end
   # end
+
+  context "GET /bookings/:id" do
+    it "allows a user to book a space and returns a booking confirmation" do
+      get "/bookings/1", {}, { "rack.session" => { user_id: 1 } }
+
+      expect(last_response.status).to eq 200
+      expect(last_response.body).to include("Booking Details")
+    end
+  end
+
+  context "POST /bookings/:id" do
+    it "creates a booking request" do
+      post '/bookings/1',{ confirmed: false, requested_space_id: 1, requested_user_id: 1 }, { "rack.session" => { user_id: 1 } }
+      follow_redirect!
+      expect(last_response.status).to eq(200)
+    end
+  end
 end
