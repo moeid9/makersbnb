@@ -288,6 +288,52 @@ describe Application do
   #     expect(response.body).to include("<p>Name: Space C</p>")
   #   end
   # end
+  context "POST /spaces/create" do
+    it "should get the creation page for spaces" do
+      response = post(
+        "spaces/create")
+
+      expect(response.status).to eq(302)
+    end
+
+    it "allows maker to create a space" do
+      get "/spaces/create", {}, { "rack.session" => { maker_id: 1 } }
+
+      expect(last_response.status).to eq(200)
+      expect(last_response.body).to include("<h1>Add a New Space</h1>")
+    end
+
+    it "does not allow unsigned in to create a space" do
+      get "/spaces/create", {}, { "rack.session" => {  } }
+
+      expect(last_response.status).to eq(302)
+    end
+  end
+
+  context '/logout' do
+    it 'logs out maker' do
+      get "/", {}, { "rack.session" => { maker_id: 1 } }
+      expect(last_response.status).to eq(200)
+      expect(last_response.body).to include("Logout")
+
+      get "/logout", {}, { "rack.session" => { maker_id: 1 } }
+      follow_redirect!
+
+      expect(last_response.status).to eq(200)
+      expect(last_response.body).to include("Makers Login")
+    end
+    it 'logs out user' do
+      get "/", {}, { "rack.session" => { user_id: 1 } }
+      expect(last_response.status).to eq(200)
+      expect(last_response.body).to include("Logout")
+
+      get "/logout", {}, { "rack.session" => { user_id: 1 } }
+      follow_redirect!
+
+      expect(last_response.status).to eq(200)
+      expect(last_response.body).to include("Users Login")
+    end
+  end
 
   context "GET /bookings/:id" do
     it "allows a user to book a space and returns a booking confirmation" do
