@@ -305,4 +305,20 @@ describe Application do
       expect(last_response.status).to eq(200)
     end
   end
+
+  context "/logout" do
+    it "logs a maker out" do
+      get "/logout", {}, { "rack.session" => { maker_id: 1 } }
+      follow_redirect!
+
+      expect(last_response.status).to eq 200
+    end
+
+    it "logs a user out" do
+      get "/logout", {}, { "rack.session" => { user_id: 1 } }
+      follow_redirect!
+
+      expect(last_response.status).to eq 200
+    end
+  end
 end
