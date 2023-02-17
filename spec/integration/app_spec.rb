@@ -283,6 +283,15 @@ describe Application do
     end
   end
 
+  context "GET /makers/my-spaces" do
+    it "returns a list of makers listed spaces" do
+      get "/makers/my-spaces", {}, { "rack.session" => { maker_id: 1 } }
+
+      expect(last_response.status).to eq 200
+      
+    end
+  end
+
 
   # GET /spaces/:maker_id
   # xcontext "GET /spaces/:maker_id" do
