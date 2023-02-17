@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <link rel="stylesheet" href="/style.css" >
-    <link rel="icon" href="/cheetha.svg" type="image/png">
     <title>Makersbnb</title>
   </head>
   <body>
@@ -55,10 +54,10 @@
     </header>
     <main>
       <div class="container">
-        <h1>Spaces</h1>
+        <h1>My Bookings</h1>
         <!-- Book space, list available dates etc -->
-        <% if @spaces.length == 0 %>
-          <p class="mt-4">There is no booking for your spaces.</p>
+        <% if @bookings.length == 0 %>
+          <p class="mt-4">You haven't made any booking.</p>
         <% end %>
         <% if flash[:message] %>
           <div class="alert alert-info container" role="alert">
@@ -67,7 +66,7 @@
         <% end %>
       </div>
       <div class="container d-flex flex-wrap" id="spaces-container">
-        <% @spaces.each do |space| %>
+        <% @bookings.each do |booking| %>
           <!-- Table containing all the spaces available to book -->
           <div class="col-12 col-md-6 col-xl-4 p-2" id="space">
             <div class="card">
@@ -76,10 +75,14 @@
               <!-- img style="max-width: 100%; max-height: 200px; object-fit: cover;" src="<%=image_links.sample%>" class="" alt="" -->
               <img class="img-fluid" src="<%= image_links.sample %>">
               <div class="card-body">
-                <h3 class="card-title"><%= space.name %></h3>
+                <h3 class="card-title"><%= booking[:space_name] %></h3>
+                <% if booking[:confirm] == "t" %>
+                  <div class="badge text-bg-success mb-2">Confirmed</div>
+                <% else %>
+                  <div class="badge text-bg-warning mb-2">Pending</div>
+                <% end %>
                 <%# description %>
-                <p class="card-text text-truncate"><%= space.description %></p>
-                <a href="spaces/<%= space.id %>" class="btn btn-outline-primary spacecard-book-button">Details</a>
+                <p class="card-text"><%= booking[:date] %></p>
               </div>
             </div>
           </div>

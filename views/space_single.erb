@@ -8,13 +8,27 @@
     <link rel="stylesheet" href="/style.css" >
     <link rel="icon" href="/cheetha.svg" type="image/png">
     <title>Makersbnb</title>
+    <style>
+      .space-single-image-wrapper img {
+        width: 100%;
+        max-height: 50vh;
+        object-fit: cover;
+        border-radius: 1rem;
+      }
+
+      .price-box{
+        border: 1px solid rgb(221,221,221);
+        border-radius: 12px;
+        box-shadow: rgb(0 0 0 / 12%) 0px 6px 16px;
+      }
+    </style>
   </head>
   <body>
     <header>
       <nav class="navbar navbar-expand-lg bg-body-tertiary px-3">
         <div class="container-fluid">
           <%# Logo %>
-          <a class="navbar-brand logo-rapper" id="team-logo-title" href="/">
+          <a class="navbar-brand logo-wrapper" id="team-logo-title" href="/">
             <img src="/cheetha.svg" height="40">
             Team Cheetah
           </a>
@@ -25,7 +39,12 @@
             <div class="navbar-nav me-auto mb-2 mb-lg-0">
               <% if session[:maker_id] %>
                 <a class="nav-link" aria-current="page" href="/spaces">Spaces</a>
-                <a class="nav-link" href="#">Bookings</a>
+                <a class="nav-link" href="/spaces/create">Create Spaces</a>
+                <a class="nav-link" href="/makers/confirmation">Confirm Bookings</a>
+                <a class="nav-link" href="/makers/my-spaces">My Spaces</a>
+              <% elsif session[:user_id] %>
+                <a class="nav-link" aria-current="page" href="/spaces">Spaces</a>
+                <a class="nav-link" aria-current="page" href="/my-bookings">My Bookings</a>
               <% end %>
             </div>
             <% if session[:maker_id] %>
@@ -34,8 +53,15 @@
                 </div>
                 <a class="btn btn-outline-danger" href="/logout">Logout</a>
               </div>
+            <% elsif session[:user_id] %>
+              <div style="display: flex; gap: 20px; align-items:center">
+                <div>Logged in As <span class="user-name-container"><%= @user.name %></span>
+                </div>
+                <a class="btn btn-outline-danger" href="/logout">Logout</a>
+              </div>
             <% else %>
               <a class="btn btn-outline-primary" href="/makers/login">Makers Login</a>
+              <a class="btn btn-outline-primary ms-2" href="/users/login">Users Login</a>
             <% end %>
           </div>
         </div>
@@ -44,16 +70,45 @@
     <main>
       <div class="container" id="spaces-container">
         <%# name %>
-        <h1><%= @space.name %></h1>
-        <%# description %>
-        <p>Description: <%= @space.description %></p>
-        <p>Price per night: £<%= @space.price %></p>
-        <p>Available: <%= @space.date %></p>
-        <p>Location: <%= @space.location %></p>
-        <a href="/bookings/<%= @space.id %>" class="btn btn-primary">Book</a>
-        <a href="/spaces" class="btn btn-outline-primary">Go back</a>
+        <div class="mb-2">
+          <h1 class="mb-1"><%= @space.name %></h1>
+          <p><%= @space.location %></p>
+        </div>
+        <div class="space-single-image-wrapper">
+          <% image_links = ["https://tinyurl.com/bp7ndxu7", "https://tinyurl.com/3p4ru45x", "https://tinyurl.com/bdzxyex9", "https://tinyurl.com/mrx469hw", "https://tinyurl.com/3s2v69u2", "https://tinyurl.com/5h7j588y", "https://tinyurl.com/2p8kruu4", "https://tinyurl.com/526nvtnn"] %>
+          <!-- img style="max-width: 100%; max-height: 200px; object-fit: cover;" src="<%=image_links.sample%>" class="" alt="" -->
+          <img src="<%= image_links.sample %>">
+        </div>
+        <div class="my-4 d-flex flex-wrap gap-4">
+          <div class="col-12 col-md">
+            <p style="margin-bottom: 0rem; font-size: 1.2rem;">Hosted by <%= @owner.name %></p>
+            <p style="opacity: 0.65">4 guests2 bedrooms2 beds2 bathrooms</p>
+            <hr>
+            <div>
+              <h3 style="font-size:1.2rem;">Description</h3>
+              <p><%= @space.description %></p>
+            </div>
+          </div>
+          <%# description %>
+          <div class="col-12 col-md-5 p-4 price-box">
+            <h3 class="mb-2">£<%= @space.price %><span class="ms-2" style="font-size: 1rem;">night</span></h3>
+            <hr>
+            <div>
+              <h3 style="font-size:1.2rem;">Available date:</h3>
+              <p> <%= @space.date %></p>
+            </div>
+            <% if session[:user_id] %>
+              <a href="/bookings/<%= @space.id %>" class="btn btn-primary w-100">Reserve</a>
+            <% else %>
+              <button type="button" class="btn btn-secondary w-100" disabled>Reserve</button>
+            <% end %>
+          </div>
+        </div>
+        <div class="d-flex" style="margin: 4rem 0;">
+          <a href="/spaces" class="btn btn-outline-primary mx-auto" style="width:100%; max-width: 500px;">Go back</a>
+        </div>
       </div>
     </main>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></>
   </body>
 </html>

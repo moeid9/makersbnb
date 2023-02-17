@@ -17,3 +17,8 @@ gem "rainbow", "~> 3.1"
 gem "bcrypt", "~> 3.1"
 
 gem "rack-flash3", "~> 1.0"
+
+group :test do
+  gem 'simplecov', require: false
+  gem 'simplecov-console', require: false
+end

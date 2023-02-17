@@ -14,7 +14,7 @@
       <nav class="navbar navbar-expand-lg bg-body-tertiary px-3">
         <div class="container-fluid">
           <%# Logo %>
-          <a class="navbar-brand logo-rapper" id="team-logo-title" href="/">
+          <a class="navbar-brand logo-wrapper" id="team-logo-title" href="/">
             <img src="/cheetha.svg" height="40">
             Team Cheetah
           </a>
@@ -22,18 +22,31 @@
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <% if session[:maker_id] %>
-              <div class="navbar-nav me-auto mb-2 mb-lg-0">
+            <div class="navbar-nav me-auto mb-2 mb-lg-0">
+              <% if session[:maker_id] %>
                 <a class="nav-link" aria-current="page" href="/spaces">Spaces</a>
                 <a class="nav-link" href="/spaces/create">Create Spaces</a>
-              </div>
+                <a class="nav-link" href="/makers/confirmation">Confirm Bookings</a>
+                <a class="nav-link" href="/makers/my-spaces">My Spaces</a>
+              <% elsif session[:user_id] %>
+                <a class="nav-link" aria-current="page" href="/spaces">Spaces</a>
+              <% end %>
+            </div>
+            <% if session[:maker_id] %>
               <div style="display: flex; gap: 20px; align-items:center">
                 <div>Logged in As <span class="user-name-container"><%= @maker.name %></span>
                 </div>
                 <a class="btn btn-outline-danger" href="/logout">Logout</a>
               </div>
+            <% elsif session[:user_id] %>
+              <div style="display: flex; gap: 20px; align-items:center">
+                <div>Logged in As <span class="user-name-container"><%= @user.name %></span>
+                </div>
+                <a class="btn btn-outline-danger" href="/logout">Logout</a>
+              </div>
             <% else %>
               <a class="btn btn-outline-primary" href="/makers/login">Makers Login</a>
+              <a class="btn btn-outline-primary ms-2" href="/users/login">Users Login</a>
             <% end %>
           </div>
         </div>
@@ -41,33 +54,34 @@
     </header>
     <main>
       <div class="container">
-        <h1>Confirm a Space</h1>
+        <h1>Confirm Bookings</h1>
         <!-- Book space, list available dates etc -->
+        <% if flash[:message] %>
+          <div class="alert alert-info container" role="alert">
+            <%= flash[:message] %>
+          </div>
+        <% end %>
+        <% if @bookings.length == 0 %>
+          <p class="mt-4">There is no booking for your spaces.</p>
+        <% end %>
       </div>
-      <% if flash[:message] %>
-            <div class="alert alert-info container" role="alert">
-              <%= flash[:message] %>
-            </div>
-          <% end %>
       <div class="container d-flex flex-wrap" id="spaces-container">
-        <% @spaces.each do |space| %>
-
-        <!-- Table containing all the spaces available to book -->
-        <div class="col-12 col-md-6 col-xl-4 p-2" id="space">
+        <% @bookings.each do |booking| %>
+          <!-- Table containing all the spaces available to book -->
+          <div class="col-12 col-md-6 col-xl-4 p-2" id="space">
             <div class="card">
-            <%# name %>
-            <% image_links = ["https://tinyurl.com/bp7ndxu7", "https://tinyurl.com/3p4ru45x", "https://tinyurl.com/bdzxyex9", "https://tinyurl.com/mrx469hw", "https://tinyurl.com/3s2v69u2", "https://tinyurl.com/5h7j588y", "https://tinyurl.com/2p8kruu4", "https://tinyurl.com/526nvtnn"] %>
-            <!-- img style="max-width: 100%; max-height: 200px; object-fit: cover;" src="<%=image_links.sample%>" class="" alt="" -->
-            <img class="img-fluid" src="<%= image_links.sample %>">
-            <div class="card-body">
-                <h3 class="card-title"><%= space.name %></h3>
+              <%# name %>
+              <% image_links = ["https://tinyurl.com/bp7ndxu7", "https://tinyurl.com/3p4ru45x", "https://tinyurl.com/bdzxyex9", "https://tinyurl.com/mrx469hw", "https://tinyurl.com/3s2v69u2", "https://tinyurl.com/5h7j588y", "https://tinyurl.com/2p8kruu4", "https://tinyurl.com/526nvtnn"] %>
+              <!-- img style="max-width: 100%; max-height: 200px; object-fit: cover;" src="<%=image_links.sample%>" class="" alt="" -->
+              <img class="img-fluid" src="<%= image_links.sample %>">
+              <div class="card-body">
+                <h3 class="card-title"><%= booking[:space_name] %></h3>
                 <%# description %>
-                <p class="card-text"><%= space.description %></p>
-                <a href="/makers/confirm_request/<%= space.id %>" class="btn btn-outline-primary spacecard-book-button">Confirm</a>
+                <p class="card-text">Requester: <%= booking[:user_name] %></p>
+                <a href="/makers/confirm_request/<%= booking[:id] %>" class="btn btn-outline-primary spacecard-book-button">Confirm</a>
+              </div>
             </div>
-            </div>
-        </div>
-
+          </div>
         <% end %>
       </div>
     </main>
