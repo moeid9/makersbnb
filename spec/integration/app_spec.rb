@@ -253,6 +253,37 @@ describe Application do
     end
   end
 
+  context "GET /makers/confirmation" do
+    it "should return a message with no bookings when no booking has been made" do
+      get "/makers/confirmation", {}, { "rack.session" => { maker_id: 1 } }
+      
+      expect(last_response.status).to eq(200)
+      expect(last_response.body).to include('There is no booking for your spaces.')
+    end
+
+    it "should return a booking card when" do
+      
+      post "/bookings/1", {}, { "rack.session" => { user_id: 1 } }
+      get "/makers/confirmation", {}, { "rack.session" => { maker_id: 1 } }
+      
+      expect(last_response.status).to eq(200)
+      expect(last_response.body).to include('Space A')
+    end
+  end
+
+  context "GET /makers/confirm_request/:space_id" do
+    it "should get a booking confirmation message when a booking is confirmed" do
+    
+      post "/bookings/1", {}, { "rack.session" => { user_id: 1 } }
+      get "/makers/confirm_request/1", {}, { "rack.session" => { maker_id: 1 } }
+      follow_redirect!
+      
+      expect(last_response.status).to eq(200)
+      expect(last_response.body). to include('You have confirmed a booking.')
+    end
+  end
+
+
   # GET /spaces/:maker_id
   # xcontext "GET /spaces/:maker_id" do
   #   it "should return a list of spaces with a given maker id" do
@@ -288,4 +319,83 @@ describe Application do
   #     expect(response.body).to include("<p>Name: Space C</p>")
   #   end
   # end
+  context "POST /spaces/create" do
+    it "should get the creation page for spaces" do
+      response = post(
+        "spaces/create")
+
+      expect(response.status).to eq(302)
+    end
+
+    it "allows maker to create a space" do
+      get "/spaces/create", {}, { "rack.session" => { maker_id: 1 } }
+
+      expect(last_response.status).to eq(200)
+      expect(last_response.body).to include("<h1>Add a New Space</h1>")
+    end
+
+    it "does not allow unsigned in to create a space" do
+      get "/spaces/create", {}, { "rack.session" => {  } }
+
+      expect(last_response.status).to eq(302)
+    end
+  end
+
+  context '/logout' do
+    it 'logs out maker' do
+      get "/", {}, { "rack.session" => { maker_id: 1 } }
+      expect(last_response.status).to eq(200)
+      expect(last_response.body).to include("Logout")
+
+      get "/logout", {}, { "rack.session" => { maker_id: 1 } }
+      follow_redirect!
+
+      expect(last_response.status).to eq(200)
+      expect(last_response.body).to include("Makers Login")
+    end
+    it 'logs out user' do
+      get "/", {}, { "rack.session" => { user_id: 1 } }
+      expect(last_response.status).to eq(200)
+      expect(last_response.body).to include("Logout")
+
+      get "/logout", {}, { "rack.session" => { user_id: 1 } }
+      follow_redirect!
+
+      expect(last_response.status).to eq(200)
+      expect(last_response.body).to include("Users Login")
+    end
+  end
+
+  context "GET /bookings/:id" do
+    it "allows a user to book a space and returns a booking confirmation" do
+      get "/bookings/1", {}, { "rack.session" => { user_id: 1 } }
+
+      expect(last_response.status).to eq 200
+      expect(last_response.body).to include("Booking Details")
+    end
+  end
+
+  context "POST /bookings/:id" do
+    it "creates a booking request" do
+      post '/bookings/1',{ confirmed: false, requested_space_id: 1, requested_user_id: 1 }, { "rack.session" => { user_id: 1 } }
+      follow_redirect!
+      expect(last_response.status).to eq(200)
+    end
+  end
+
+  context "/logout" do
+    it "logs a maker out" do
+      get "/logout", {}, { "rack.session" => { maker_id: 1 } }
+      follow_redirect!
+
+      expect(last_response.status).to eq 200
+    end
+
+    it "logs a user out" do
+      get "/logout", {}, { "rack.session" => { user_id: 1 } }
+      follow_redirect!
+
+      expect(last_response.status).to eq 200
+    end
+  end
 end
