@@ -67,7 +67,7 @@ class UsersRepository
     end
 
     # Compare the submitted password with the encrypted one saved in the database
-    if user.password == BCrypt::Password.new(user.password)
+    if BCrypt::Password.new(user.password) == submitted_password
       return true
     else
       return false

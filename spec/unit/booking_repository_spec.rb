@@ -1,5 +1,5 @@
-require_relative '../../lib/booking.rb'
-require_relative '../../lib/booking_repository.rb'
+require_relative "../../lib/booking.rb"
+require_relative "../../lib/booking_repository.rb"
 
 describe BookingRepository do
   def reset_bookings_table
@@ -20,7 +20,7 @@ describe BookingRepository do
     expect(bookings.first.id).to eq 1
     expect(bookings.first.requested_space_id).to eq 1
   end
-  
+
   it "creates a new booking for a space" do # Moeid
     new_booking = Bookings.new
 
@@ -36,17 +36,16 @@ describe BookingRepository do
 
   it "should return a booking when an booking_id is given" do # Terry
     booking = @repo.find_by_booking_id(3)
-    
+
     expect(booking.id).to eq 3
-    p booking.confirmed
     expect(booking.confirmed).to eq "f"
     expect(booking.requested_space_id).to eq 3
     expect(booking.requested_user_id).to eq 3
   end
 
   it "should confirm a booked as completed" do # Chris
-    @repo.confirm(1)
-    
+    @repo.confirm(1, 1)
+
     booked = @repo.find_by_booking_id(1)
     expect(booked.confirmed).to eq "t"
   end
@@ -57,12 +56,5 @@ describe BookingRepository do
     expect(booking.confirmed).to eq "t"
     expect(booking.requested_space_id).to eq 1
     expect(booking.requested_user_id).to eq 1
-
   end
-  
-
-  # it "should return  " do
-
-    
-  # end
 end

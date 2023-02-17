@@ -30,7 +30,6 @@
                 <a class="nav-link" href="/makers/my-spaces">My Spaces</a>
               <% elsif session[:user_id] %>
                 <a class="nav-link" aria-current="page" href="/spaces">Spaces</a>
-                <a class="nav-link" aria-current="page" href="/my-bookings">My Bookings</a>
               <% end %>
             </div>
             <% if session[:maker_id] %>
@@ -55,19 +54,19 @@
     </header>
     <main>
       <div class="container">
-        <h1>Spaces</h1>
+        <h1>Confirm Bookings</h1>
         <!-- Book space, list available dates etc -->
-        <% if @spaces.length == 0 %>
-          <p class="mt-4">There is no booking for your spaces.</p>
-        <% end %>
         <% if flash[:message] %>
           <div class="alert alert-info container" role="alert">
             <%= flash[:message] %>
           </div>
         <% end %>
+        <% if @bookings.length == 0 %>
+          <p class="mt-4">There is no booking for your spaces.</p>
+        <% end %>
       </div>
       <div class="container d-flex flex-wrap" id="spaces-container">
-        <% @spaces.each do |space| %>
+        <% @bookings.each do |booking| %>
           <!-- Table containing all the spaces available to book -->
           <div class="col-12 col-md-6 col-xl-4 p-2" id="space">
             <div class="card">
@@ -76,10 +75,10 @@
               <!-- img style="max-width: 100%; max-height: 200px; object-fit: cover;" src="<%=image_links.sample%>" class="" alt="" -->
               <img class="img-fluid" src="<%= image_links.sample %>">
               <div class="card-body">
-                <h3 class="card-title"><%= space.name %></h3>
+                <h3 class="card-title"><%= booking[:space_name] %></h3>
                 <%# description %>
-                <p class="card-text text-truncate"><%= space.description %></p>
-                <a href="spaces/<%= space.id %>" class="btn btn-outline-primary spacecard-book-button">Details</a>
+                <p class="card-text">Requester: <%= booking[:user_name] %></p>
+                <a href="/makers/confirm_request/<%= booking[:id] %>" class="btn btn-outline-primary spacecard-book-button">Confirm</a>
               </div>
             </div>
           </div>

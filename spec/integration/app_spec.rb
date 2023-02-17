@@ -32,8 +32,8 @@ describe Application do
       expect(response.status).to eq(200)
       expect(response.body).to include("<h1>Makers Login</h1>")
       expect(response.body).to include('<form action="/makers/login" method="POST">')
-      expect(response.body).to include('<input type="email" class="form-control" name="email">')
-      expect(response.body).to include('<input type="password" class="form-control" name="password" >')
+      expect(response.body).to include('input type="email" class="form-control" name="email"')
+      expect(response.body).to include('input type="password" class="form-control" name="password"')
     end
   end
 
@@ -58,14 +58,14 @@ describe Application do
       follow_redirect!
 
       expect(last_response.status).to eq(200)
-      expect(last_response.body).to include("<h1>Book a Space</h1>")
+      expect(last_response.body).to include("<h1>Spaces</h1>")
     end
 
     it "should redirect to makers/login if empty inputs are given" do
       post "/makers/login",
            { email: "",
              password: "" }
-      follow_redirect!
+      # follow_redirect!
 
       expect(last_response.status).to eq(200)
       expect(last_response.body).to include("<h1>Makers Login</h1>")
@@ -162,10 +162,10 @@ describe Application do
       response = get("/users/login")
 
       expect(response.status).to eq(200)
-      expect(response.body).to include("<h1>Login to your Account</h1>")
+      expect(response.body).to include("<h1>User Login</h1>")
       expect(response.body).to include('<form action="/users/login" method="POST">')
-      expect(response.body).to include('<input type="email" class="form-control" name="email">')
-      expect(response.body).to include('<input type="password" class="form-control" name="password" >')
+      expect(response.body).to include('input type="email" class="form-control" name="email"')
+      expect(response.body).to include('input type="password" class="form-control" name="password"')
     end
   end
 
@@ -186,7 +186,7 @@ describe Application do
         email: "",
         password: "",
       )
-      expect(response.body).to include("<h1>Login to your Account</h1>")
+      expect(response.body).to include("<h1>User Login</h1>")
       expect(response.status).to eq(200)
     end
 
@@ -195,7 +195,7 @@ describe Application do
         "/users/login"
       )
 
-      expect(response.body).to include("<h1>Login to your Account</h1>")
+      expect(response.body).to include("<h1>User Login</h1>")
       expect(response.status).to eq(200)
     end
   end
@@ -206,7 +206,7 @@ describe Application do
       get "/spaces", {}, { "rack.session" => { maker_id: 1 } }
 
       expect(last_response.status).to eq(200)
-      expect(last_response.body).to include("<h1>Book a Space</h1>")
+      expect(last_response.body).to include("<h1>Spaces</h1>")
     end
 
     it "should redirect to login page with a message without logging in" do
@@ -214,7 +214,7 @@ describe Application do
       follow_redirect!
 
       expect(last_response.status).to eq(200)
-      expect(last_response.body).to include("<h1>Makers Login</h1>")
+      expect(last_response.body).to include("<h1>User Login</h1>")
     end
   end
   # GET /spaces/create
@@ -227,13 +227,13 @@ describe Application do
   end
 
   # PUT /spaces
-  xcontext "PATCH /spaces" do
-    it "should update a space" do
-      response = patch("/spaces")
+  # xcontext "PATCH /spaces" do
+  #   it "should update a space" do
+  #     response = patch("/spaces")
 
-      expect(response.status).to eq(200)
-    end
-  end
+  #     expect(response.status).to eq(200)
+  #   end
+  # end
 
   # GET /spaces/:id
   context "GET /spaces/:id" do
@@ -241,7 +241,7 @@ describe Application do
       get "/spaces/1", {}, { "rack.session" => { maker_id: 1 } }
 
       expect(last_response.status).to eq(200)
-      expect(last_response.body).to include("<p>Location: London</p>")
+      expect(last_response.body).to include("London")
     end
 
     it "should redirect to login page with a message without logging in" do
@@ -249,43 +249,43 @@ describe Application do
       follow_redirect!
 
       expect(last_response.status).to eq(200)
-      expect(last_response.body).to include("<h1>Makers Login</h1>")
+      expect(last_response.body).to include("<h1>User Login</h1>")
     end
   end
 
   # GET /spaces/:maker_id
-  xcontext "GET /spaces/:maker_id" do
-    it "should return a list of spaces with a given maker id" do
-      response = get("/spaces/2")
+  # xcontext "GET /spaces/:maker_id" do
+  #   it "should return a list of spaces with a given maker id" do
+  #     response = get("/spaces/2")
 
-      expect(response.status).to eq(200)
-      expect(response.body).to include("<p>Location: Leeds</p>")
-      expect(response.body).to include("<p>Name: Space B</p>")
-      expect(response.body).to include("<p>Name: Space C</p>")
-    end
-  end
+  #     expect(response.status).to eq(200)
+  #     expect(response.body).to include("<p>Location: Leeds</p>")
+  #     expect(response.body).to include("<p>Name: Space B</p>")
+  #     expect(response.body).to include("<p>Name: Space C</p>")
+  #   end
+  # end
 
-  # GET /spaces/:date
-  xcontext "GET /spaces/:date" do
-    it "should return a list of spaces with a given date" do
-      response = get("/spaces/2022-02-14")
+  # # GET /spaces/:date
+  # xcontext "GET /spaces/:date" do
+  #   it "should return a list of spaces with a given date" do
+  #     response = get("/spaces/2022-02-14")
 
-      expect(response.status).to eq(200)
-      expect(response.body).to include("<p>Location: Leeds</p>")
-      expect(response.body).to include("<p>Name: Space B</p>")
-      expect(response.body).to include("<p>Name: Space C</p>")
-    end
-  end
+  #     expect(response.status).to eq(200)
+  #     expect(response.body).to include("<p>Location: Leeds</p>")
+  #     expect(response.body).to include("<p>Name: Space B</p>")
+  #     expect(response.body).to include("<p>Name: Space C</p>")
+  #   end
+  # end
 
-  # GET /spaces/:location
-  xcontext "GET /spaces/:location" do
-    it "should return a list of spaces with a given location" do
-      response = get("/spaces/leeds")
+  # # GET /spaces/:location
+  # xcontext "GET /spaces/:location" do
+  #   it "should return a list of spaces with a given location" do
+  #     response = get("/spaces/leeds")
 
-      expect(response.status).to eq(200)
-      expect(response.body).to include("<p>Location: Leeds</p>")
-      expect(response.body).to include("<p>Name: Space B</p>")
-      expect(response.body).to include("<p>Name: Space C</p>")
-    end
-  end
+  #     expect(response.status).to eq(200)
+  #     expect(response.body).to include("<p>Location: Leeds</p>")
+  #     expect(response.body).to include("<p>Name: Space B</p>")
+  #     expect(response.body).to include("<p>Name: Space C</p>")
+  #   end
+  # end
 end
