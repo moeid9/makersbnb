@@ -55,6 +55,9 @@
       <div class="container">
         <h1>My Spaces</h1>
         <!-- Book space, list available dates etc -->
+        <% if @spaces.length == 0 %>
+          <p class="mt-4">You haven't created any spaces.</p>
+        <% end %>
       </div>
       <% if flash[:message] %>
         <div class="alert alert-info container" role="alert">
