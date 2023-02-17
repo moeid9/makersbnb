@@ -15,7 +15,6 @@ h2 {
 body {
   display: flex;
   flex-direction: column;
-  height: 100vh;
 }
 
 main {
@@ -38,14 +37,14 @@ h1 {
 
 .login-main {
   flex-direction: row;
-  gap: 5rem;
-  margin-top: 3rem;
+  gap: 3rem;
+  margin-top: 2rem;
 }
 
-.image-rapper {
+.image-wrapper {
   border-radius: 12px;
   max-width: 50%;
-  max-height: 45vh;
+  /* max-height: 45vh; */
   object-fit: cover;
   box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.1);
 }
@@ -56,25 +55,25 @@ h1 {
   margin: 0 0.5rem;
 }
 
-.logo-rapper {
+.logo-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
 }
 
-.login-button-rapper {
+.login-button-wrapper {
   display: flex;
   gap: 1rem;
   margin-top: 2rem;
 }
 
-.login-button-rapper button,
-.login-button-rapper a {
+.login-button-wrapper button,
+.login-button-wrapper a {
   flex: 1;
 }
 
-.home-hero-rapper {
+.home-hero-wrapper {
   margin-top: 3rem;
   background-color: rgba(255, 255, 255, 0.65);
   border-radius: 1rem;
@@ -102,15 +101,15 @@ h1 {
     justify-content: center;
   }
 
-  .home-hero-rapper {
+  .home-hero-wrapper {
     background-color: rgba(255, 255, 255, 0.8);
   }
 
-  .login-button-rapper {
+  .login-button-wrapper {
     flex-direction: column;
   }
 
-  .image-rapper {
+  .image-wrapper {
     max-width: 100%;
   }
 
@@ -125,11 +124,12 @@ h1 {
     gap: 1rem;
     margin-top: 2rem;
   }
-  
+
   .create-booking-button-wrapper button,
-  .login-button-rapper a {
+  .login-button-wrapper a {
     flex: 1;
   }
 }
 
-img {}
+img {
+}

@@ -162,7 +162,7 @@ describe Application do
       response = get("/users/login")
 
       expect(response.status).to eq(200)
-      expect(response.body).to include("<h1>Login to your Account</h1>")
+      expect(response.body).to include("<h1>User Login</h1>")
       expect(response.body).to include('<form action="/users/login" method="POST">')
       expect(response.body).to include('input type="email" class="form-control" name="email"')
       expect(response.body).to include('input type="password" class="form-control" name="password"')
@@ -186,7 +186,7 @@ describe Application do
         email: "",
         password: "",
       )
-      expect(response.body).to include("<h1>Login to your Account</h1>")
+      expect(response.body).to include("<h1>User Login</h1>")
       expect(response.status).to eq(200)
     end
 
@@ -195,7 +195,7 @@ describe Application do
         "/users/login"
       )
 
-      expect(response.body).to include("<h1>Login to your Account</h1>")
+      expect(response.body).to include("<h1>User Login</h1>")
       expect(response.status).to eq(200)
     end
   end
@@ -214,7 +214,7 @@ describe Application do
       follow_redirect!
 
       expect(last_response.status).to eq(200)
-      expect(last_response.body).to include("<h1>Login to your Account</h1>")
+      expect(last_response.body).to include("<h1>User Login</h1>")
     end
   end
   # GET /spaces/create
@@ -241,7 +241,7 @@ describe Application do
       get "/spaces/1", {}, { "rack.session" => { maker_id: 1 } }
 
       expect(last_response.status).to eq(200)
-      expect(last_response.body).to include("<p>Location: London</p>")
+      expect(last_response.body).to include("London")
     end
 
     it "should redirect to login page with a message without logging in" do
@@ -249,7 +249,7 @@ describe Application do
       follow_redirect!
 
       expect(last_response.status).to eq(200)
-      expect(last_response.body).to include("<h1>MakersBnB</h1>")
+      expect(last_response.body).to include("<h1>User Login</h1>")
     end
   end
 

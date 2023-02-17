@@ -11,7 +11,7 @@
   <body>
     <nav class="navbar navbar-expand-lg bg-body-tertiary px-3">
       <div class="container-fluid">
-        <a class="navbar-brand logo-rapper" id="team-logo-title" href="/">
+        <a class="navbar-brand logo-wrapper" id="team-logo-title" href="/">
           <img src="/cheetha.svg" height="40">
           Team Cheetah
         </a>
@@ -21,9 +21,10 @@
       </div>
     </nav>
     <main class="container login-main">
-      <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1475&q=80" class="img-fluid image-rapper col" alt="A nice house in the countryside, picked by Dora">
-      <div class="d-flex flex-column w-100 col">
+      <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1475&q=80" class="img-fluid image-wrapper col" alt="A nice house in the countryside, picked by Dora">
+      <div class="d-flex flex-column col p-4 p-md-5 shadow rounded-3">
         <h1>Users Sign Up</h1>
+        <hr>
         <form action="/users/signup" method="POST">
           <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Name</label>
@@ -42,9 +43,9 @@
               <%= flash[:message] %>
             </div>
           <% end %>
-          <div class="login-button-rapper">
-            <button type="submit" class="btn btn-primary">Submit</button>
-            <a class="btn btn-outline-danger" href="/">Cancel</a>
+          <div class="login-button-wrapper">
+            <button type="submit" class="btn btn-primary col">Submit</button>
+            <a class="btn btn-outline-danger col" href="/users/login">Cancel</a>
           </div>
         </form>
       </div>

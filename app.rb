@@ -239,13 +239,16 @@ class Application < Sinatra::Base
     if session[:maker_id]
       @maker = maker_repo.find(session[:maker_id])
       @space = repo.find_by_id(params[:id])
+      @owner = maker_repo.find(@space.maker_id)
       return erb(:space_single)
     elsif session[:user_id]
       @user = user_repo.find(session[:user_id])
       @space = repo.find_by_id(params[:id])
+      @owner = maker_repo.find(@space.maker_id)
       return erb(:space_single)
     else
-      redirect "/"
+      flash[:message] = "You have to log in to browse spaces."
+      redirect "/users/login"
     end
   end
 
